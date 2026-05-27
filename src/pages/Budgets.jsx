@@ -44,7 +44,7 @@ export default function Budgets() {
     if (exceeded.length > 0) {
       setShowAlert(true);
     }
-  }, [budgets, transactions, spending]);
+  }, [budgets, transactions,]);
 
   const categories = Object.keys(spending || {});
 
