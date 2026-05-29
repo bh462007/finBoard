@@ -5,15 +5,6 @@ import { demoData } from "../data/demoData";
 import { format } from "date-fns";
 import { useModal } from "../context/ModalContext";
 
-const categoryIcons = {
-  Food: "🍔",
-  Travel: "✈️",
-  Shopping: "🛒",
-  Salary: "💰",
-  Bills: "📄",
-  Entertainment: "🎬",
-  Health: "🏥",
-};
 export default function CSVParser() {
   const {
     transactions,
