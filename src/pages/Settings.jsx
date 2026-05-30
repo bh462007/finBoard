@@ -51,6 +51,7 @@ export default function Settings() {
     setTransactions,
     currency,
     updateCurrency,
+    addTransaction
   } = useContext(DataContext);
 
   const { showModal } = useModal();
@@ -155,16 +156,15 @@ export default function Settings() {
       return;
     }
 
-    const updatedTransactions = [
-      ...(transactions || []),
-      {
-        ...manualTransaction,
-        Currency: currency,
-      },
-    ];
+    const newTransaction = {
+      Date: manualTransaction.Date,
+      Description: manualTransaction.Description,
+      Amount: manualTransaction.Amount,
+      category: manualTransaction.category,
+      Currency: currency,
+    };
 
-    setTransactions(updatedTransactions);
-    localStorage.setItem("transactions", JSON.stringify(updatedTransactions));
+    addTransaction(newTransaction);
 
     setManualTransaction({
       Date: format(new Date(), "dd/MM/yyyy"),

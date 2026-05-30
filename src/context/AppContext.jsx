@@ -90,6 +90,12 @@ export function AppContext({ children }) {
     localStorage.setItem('transactions', JSON.stringify(updated));
   };
 
+  const addTransaction = (newTransaction) => {
+    const updated = [...(transactions || []), newTransaction];
+    setTransactions(updated);
+    localStorage.setItem('transactions', JSON.stringify(updated));
+  };
+
   const updateTransaction = (index, updatedTransaction) => {
     const updated = transactions.map((t, i) => (i === index ? updatedTransaction : t));
     setTransactions(updated);
