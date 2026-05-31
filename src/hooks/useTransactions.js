@@ -2,18 +2,22 @@ import { useState } from 'react';
 
 const DEFAULT_STORAGE_KEY = 'transactions';
 
-function readStoredTransactions(storageKey) {
+function readStoredTransactions(storageKey, persist) {
+	if (!persist) {
+		return { transactions: [], error: null, hasStoredValue: false };
+	}
+
 	if (typeof window === 'undefined') {
 		return { transactions: [], error: null, hasStoredValue: false };
 	}
 
-	const storedValue = window.localStorage.getItem(storageKey);
-
-	if (storedValue === null) {
-		return { transactions: [], error: null, hasStoredValue: false };
-	}
-
 	try {
+		const storedValue = window.localStorage.getItem(storageKey);
+
+		if (storedValue === null) {
+			return { transactions: [], error: null, hasStoredValue: false };
+		}
+
 		const parsedValue = JSON.parse(storedValue);
 
 		if (!Array.isArray(parsedValue)) {
@@ -38,13 +42,13 @@ export default function useTransactions(options = {}) {
 	} = options;
 	const [state, setState] = useState(() => {
 		const baseState = {
-			transactions: initialTransactions,
+			transactions: Array.isArray(initialTransactions) ? initialTransactions : [],
 			loading: false,
 			error: null,
 		};
 
 		const { transactions: storedTransactions, error: readError, hasStoredValue } =
-			readStoredTransactions(storageKey);
+			readStoredTransactions(storageKey, persist);
 
 		if (readError) {
 			return {
@@ -85,6 +89,13 @@ export default function useTransactions(options = {}) {
 				typeof valueOrUpdater === 'function'
 					? valueOrUpdater(currentState.transactions)
 					: valueOrUpdater;
+
+			if (!Array.isArray(nextTransactions)) {
+				return {
+					...currentState,
+					error: new Error('Transactions must be an array'),
+				};
+			}
 
 			return {
 				...currentState,
