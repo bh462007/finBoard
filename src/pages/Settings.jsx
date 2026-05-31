@@ -160,7 +160,7 @@ export default function Settings() {
       Date: manualTransaction.Date,
       Description: manualTransaction.Description,
       Amount: manualTransaction.Amount,
-      category: manualTransaction.category,
+      category: manualTransaction.Category,
       Currency: currency,
     };
 

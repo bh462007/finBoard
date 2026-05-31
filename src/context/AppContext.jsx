@@ -109,6 +109,7 @@ export function AppContext({ children }) {
       currency,
       updateCurrency,
       deleteTransaction,
+      addTransaction,
       updateTransaction,
       converting,
     }}>
