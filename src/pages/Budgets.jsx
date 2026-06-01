@@ -94,17 +94,17 @@ export default function Budgets() {
   };
 
   const panelCardClass =
-    "retro-card p-6 h-full flex flex-col animate-in fade-in duration-500 transition-all duration-300 hover:border-[#FF6B00]/20";
+    "retro-card p-6 h-full flex flex-col animate-in fade-in duration-500 transition-all duration-300 hover:border-fin-accent/20";
   const budgetCardClass =
-    "retro-card p-6 h-full min-h-[320px] flex flex-col animate-in fade-in duration-500 transition-all duration-300 hover:border-[#FF6B00]/20";
+    "retro-card p-6 h-full min-h-[320px] flex flex-col animate-in fade-in duration-500 transition-all duration-300 hover:border-fin-accent/20";
 
   return transactions && categories.length > 0 ? (
     <div className="space-y-6 animate-in fade-in duration-500">
       {showAlert && exceededCategories.length > 0 && (
-        <div className={panelCardClass + " border-[#FF6B6B] bg-[#FF6B6B]/5"}>
+        <div className={panelCardClass + " border-fin-error bg-fin-error/5"}>
           <div className="flex items-start justify-between mb-4">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-[#FF6B6B]/20 flex items-center justify-center rounded-full">
+              <div className="w-10 h-10 bg-fin-error/20 flex items-center justify-center rounded-full">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="20"
@@ -122,10 +122,10 @@ export default function Budgets() {
                 </svg>
               </div>
               <div>
-                <h3 className="text-[#FF6B6B] font-black uppercase tracking-widest text-lg">
+                <h3 className="text-fin-error font-black uppercase tracking-widest text-lg">
                   Budget Alert!
                 </h3>
-                <p className="text-gray-400 text-sm mt-1">
+                <p className="text-fin-muted text-sm mt-1">
                   You've exceeded your budget in {exceededCategories.length}{" "}
                   {exceededCategories.length === 1 ? "category" : "categories"}
                 </p>
@@ -133,7 +133,7 @@ export default function Budgets() {
             </div>
             <button
               onClick={() => setShowAlert(false)}
-              className="text-gray-500 hover:text-gray-300 transition-colors"
+              className="text-fin-muted hover:text-gray-300 transition-colors"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -156,15 +156,15 @@ export default function Budgets() {
             {exceededCategories.map((item) => (
               <div
                 key={item.category}
-                className="flex items-center justify-between bg-[#111111] p-3 border border-[#1F1F1F]"
+                className="flex items-center justify-between bg-fin-surface p-3 border border-[#1F1F1F]"
               >
-                <span className="font-bold text-white uppercase tracking-wider">
+                <span className="font-bold text-fin-text uppercase tracking-wider">
                   {item.category}
                 </span>
-                <span className="text-[#FF6B6B] font-black">
+                <span className="text-fin-error font-black">
                   Over by {currency.symbol}
                   {item.over.toLocaleString()}
-                  <span className="text-gray-500 text-sm ml-2">
+                  <span className="text-fin-muted text-sm ml-2">
                     ({currency.symbol}
                     {item.spent.toLocaleString()} / {currency.symbol}
                     {item.limit.toLocaleString()})
@@ -179,12 +179,12 @@ export default function Budgets() {
       {comparisonData.length > 0 && (
         <div className={panelCardClass}>
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-[#FF6B00] text-lg font-black uppercase tracking-widest">
+            <h2 className="text-fin-accent text-lg font-black uppercase tracking-widest">
               Budget vs Actual Spending
             </h2>
             <button
               onClick={resetBudgets}
-              className="text-xs text-gray-400 hover:text-[#FF6B6B] uppercase tracking-wider font-bold transition-colors"
+              className="text-xs text-fin-muted hover:text-fin-error uppercase tracking-wider font-bold transition-colors"
             >
               Reset All Budgets
             </button>
@@ -221,10 +221,10 @@ export default function Budgets() {
           return (
             <div
               key={category}
-              className={`${budgetCardClass} ${isOverBudget ? "border-[#FF6B6B] bg-[#FF6B6B]/5" : ""}`}
+              className={`${budgetCardClass} ${isOverBudget ? "border-fin-error bg-fin-error/5" : ""}`}
             >
               <div className="flex items-center justify-between mb-4">
-                <h2 className="text-xl font-bold tracking-widest uppercase text-[#FF6B00]">
+                <h2 className="text-xl font-bold tracking-widest uppercase text-fin-accent">
                   {category}
                 </h2>
                 {isOverBudget && (
@@ -247,8 +247,8 @@ export default function Budgets() {
               </div>
 
               <div className="flex items-baseline gap-2 mb-6">
-                <span className="text-sm text-gray-500 uppercase tracking-wider">Spent</span>
-                <span className={`text-2xl font-black ${isOverBudget ? "text-[#FF6B6B]" : "text-white"}`}>
+                <span className="text-sm text-fin-muted uppercase tracking-wider">Spent</span>
+                <span className={`text-2xl font-black ${isOverBudget ? "text-fin-error" : "text-fin-text"}`}>
                   {currency.symbol}
                   {spending[category].toLocaleString()}
                 </span>
@@ -264,7 +264,7 @@ export default function Budgets() {
                 />
                 {budgets[category] && (
                   <div className="pt-2">
-                    <div className="flex justify-between text-xs font-bold uppercase tracking-wider text-gray-400 mb-2">
+                    <div className="flex justify-between text-xs font-bold uppercase tracking-wider text-fin-muted mb-2">
                       <span>
                         {currency.symbol}
                         {spending[category].toLocaleString()}
@@ -282,9 +282,9 @@ export default function Budgets() {
                       value={spending[category]}
                       max={budgets[category]}
                     />
-                    <div className="mt-2 text-xs text-gray-400">
+                    <div className="mt-2 text-xs text-fin-muted">
                       {percentage >= 100 ? (
-                        <span className="text-[#FF6B6B] font-bold">
+                        <span className="text-fin-error font-bold">
                           {percentage.toFixed(0)}% - Over budget by {currency.symbol}
                           {(spending[category] - budgets[category]).toLocaleString()}
                         </span>
@@ -293,7 +293,7 @@ export default function Budgets() {
                           {percentage.toFixed(0)}% - Approaching limit
                         </span>
                       ) : (
-                        <span className="text-[#00C49F]">
+                        <span className="text-fin-success">
                           {percentage.toFixed(0)}% - {currency.symbol}
                           {(budgets[category] - spending[category]).toLocaleString()} remaining
                         </span>
@@ -309,8 +309,8 @@ export default function Budgets() {
     </div>
   ) : (
     <div className="flex flex-col items-center justify-center h-full min-h-[60vh]">
-      <div className="retro-card p-12 flex flex-col items-center max-w-md text-center border-[#FF6B6B]/20 animate-in fade-in zoom-in-95 duration-500 transition-all duration-300 hover:border-[#FF6B6B]/28">
-        <div className="w-16 h-16 bg-[#FF6B00]/10 flex items-center justify-center rounded-full mb-6 text-[#FF6B00]">
+      <div className="retro-card p-12 flex flex-col items-center max-w-md text-center border-fin-error/20 animate-in fade-in zoom-in-95 duration-500 transition-all duration-300 hover:border-fin-error/28">
+        <div className="w-16 h-16 bg-fin-accent/10 flex items-center justify-center rounded-full mb-6 text-fin-accent">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="32"
@@ -325,10 +325,10 @@ export default function Budgets() {
             <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
           </svg>
         </div>
-        <h2 className="text-2xl font-black tracking-wider text-white mb-2 uppercase">
+        <h2 className="text-2xl font-black tracking-wider text-fin-text mb-2 uppercase">
           No Budgets Yet
         </h2>
-        <p className="text-gray-400 mb-8 leading-relaxed min-h-[88px] flex items-center justify-center">
+        <p className="text-fin-muted mb-8 leading-relaxed min-h-[88px] flex items-center justify-center">
           We need transaction data to compute categories so you can set budgets.
         </p>
         <Link to="/settings" className="retro-btn">

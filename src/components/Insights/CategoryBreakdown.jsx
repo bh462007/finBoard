@@ -79,7 +79,7 @@ export default function CategoryBreakdown({ transactions }) {
   return (
     <div className="theme-panel rounded-xl p-6 h-full">
       <div className="mb-6">
-        <h3 className="text-base font-bold text-white mb-1">Full Category Breakdown</h3>
+        <h3 className="text-base font-bold text-fin-text mb-1">Full Category Breakdown</h3>
         <p className="text-xs text-zinc-500">Ranked contribution distribution analysis</p>
       </div>
 
@@ -96,7 +96,7 @@ export default function CategoryBreakdown({ transactions }) {
                   <span className="text-zinc-300 font-medium">{item.displayLabel}</span>
                 </div>
                 <div className="flex items-center space-x-2">
-                  <span className="text-white font-semibold">₹{item.amount.toLocaleString()}</span>
+                  <span className="text-fin-text font-semibold">₹{item.amount.toLocaleString()}</span>
                   <span className="text-zinc-500 text-[10px] font-mono">{item.percentage}%</span>
                 </div>
               </div>

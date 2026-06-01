@@ -40,13 +40,13 @@ function EditModal({ transaction, onSave, onClose }) {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm animate-in fade-in duration-200">
       <div className="retro-card p-8 max-w-md w-full mx-4 animate-in zoom-in-95 duration-200">
-        <h3 className="text-xl font-black uppercase tracking-widest text-white mb-6">
+        <h3 className="text-xl font-black uppercase tracking-widest text-fin-text mb-6">
           Edit Transaction
         </h3>
 
         <div className="space-y-4">
           <div>
-            <label className="block text-xs text-gray-400 uppercase tracking-wider font-bold mb-2">
+            <label className="block text-xs text-fin-muted uppercase tracking-wider font-bold mb-2">
               Date
             </label>
             <input
@@ -59,7 +59,7 @@ function EditModal({ transaction, onSave, onClose }) {
             />
           </div>
           <div>
-            <label className="block text-xs text-gray-400 uppercase tracking-wider font-bold mb-2">
+            <label className="block text-xs text-fin-muted uppercase tracking-wider font-bold mb-2">
               Description
             </label>
             <input
@@ -71,7 +71,7 @@ function EditModal({ transaction, onSave, onClose }) {
             />
           </div>
           <div>
-            <label className="block text-xs text-gray-400 uppercase tracking-wider font-bold mb-2">
+            <label className="block text-xs text-fin-muted uppercase tracking-wider font-bold mb-2">
               Select Category
             </label>
             <select 
@@ -88,7 +88,7 @@ function EditModal({ transaction, onSave, onClose }) {
             </select>
           </div>
           <div>
-            <label className="block text-xs text-gray-400 uppercase tracking-wider font-bold mb-2">
+            <label className="block text-xs text-fin-muted uppercase tracking-wider font-bold mb-2">
               Amount
             </label>
             <input
@@ -98,14 +98,14 @@ function EditModal({ transaction, onSave, onClose }) {
               onChange={handleChange}
               className="retro-input p-3 w-full"
             />
-            <p className="text-xs text-gray-500 mt-1">Use negative value for expenses</p>
+            <p className="text-xs text-fin-muted mt-1">Use negative value for expenses</p>
           </div>
         </div>
 
         <div className="flex justify-end gap-4 mt-8">
           <button
             onClick={onClose}
-            className="px-6 py-3 border border-[#1F1F1F] text-gray-400 hover:text-white hover:border-gray-500 font-bold uppercase tracking-wider transition-colors"
+            className="px-6 py-3 border border-[#1F1F1F] text-fin-muted hover:text-fin-text hover:border-gray-500 font-bold uppercase tracking-wider transition-colors"
           >
             Cancel
           </button>
@@ -305,12 +305,12 @@ export default function Transaction() {
       {/* Filter Panel */}
       <div className="retro-card p-6">
         <div className="flex items-center justify-between mb-4">
-          <h2 className="text-[#FF6B00] text-lg font-black uppercase tracking-widest">
+          <h2 className="text-fin-accent text-lg font-black uppercase tracking-widest">
             Filters & Search
           </h2>
           <button
             onClick={clearFilters}
-            className="text-xs text-gray-400 hover:text-[#FF6B00] uppercase tracking-wider font-bold transition-colors"
+            className="text-xs text-fin-muted hover:text-fin-accent uppercase tracking-wider font-bold transition-colors"
           >
             Clear All
           </button>
@@ -318,7 +318,7 @@ export default function Transaction() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           <div className="lg:col-span-2">
-            <label className="block text-xs text-gray-400 uppercase tracking-wider font-bold mb-2">
+            <label className="block text-xs text-fin-muted uppercase tracking-wider font-bold mb-2">
               Search Description
             </label>
             <input
@@ -331,7 +331,7 @@ export default function Transaction() {
           </div>
 
           <div className="lg:col-span-2">
-            <label className="block text-xs text-gray-400 uppercase tracking-wider font-bold mb-2">
+            <label className="block text-xs text-fin-muted uppercase tracking-wider font-bold mb-2">
               Time Period
             </label>
             <select
@@ -352,7 +352,7 @@ export default function Transaction() {
           </div>
 
           <div>
-            <label className="block text-xs text-gray-400 uppercase tracking-wider font-bold mb-2">
+            <label className="block text-xs text-fin-muted uppercase tracking-wider font-bold mb-2">
               Min Amount
             </label>
             <input
@@ -365,7 +365,7 @@ export default function Transaction() {
           </div>
 
           <div>
-            <label className="block text-xs text-gray-400 uppercase tracking-wider font-bold mb-2">
+            <label className="block text-xs text-fin-muted uppercase tracking-wider font-bold mb-2">
               Max Amount
             </label>
             <input
@@ -378,7 +378,7 @@ export default function Transaction() {
           </div>
 
           <div>
-            <label className="block text-xs text-gray-400 uppercase tracking-wider font-bold mb-2">
+            <label className="block text-xs text-fin-muted uppercase tracking-wider font-bold mb-2">
               Sort By
             </label>
             <select
@@ -396,7 +396,7 @@ export default function Transaction() {
         </div>
 
         <div className="mt-4">
-          <label className="block text-xs text-gray-400 uppercase tracking-wider font-bold mb-2">
+          <label className="block text-xs text-fin-muted uppercase tracking-wider font-bold mb-2">
             Filter by Category
           </label>
           <div className="flex flex-wrap gap-2">
@@ -406,8 +406,8 @@ export default function Transaction() {
                 onClick={() => toggleCategory(category)}
                 className={`px-3 py-1 text-xs font-bold uppercase tracking-wider rounded-sm border transition-colors ${
                   selectedCategories.includes(category)
-                    ? "bg-[#FF6B00] text-[whitesmoke] border-[#FF6B00]"
-                    : "bg-[#1F1F1F] text-gray-300 border-[#2a2a2a] hover:border-[#FF6B00]"
+                    ? "bg-fin-accent text-[whitesmoke] border-fin-accent"
+                    : "bg-[#1F1F1F] text-gray-300 border-fin-border-strong hover:border-fin-accent"
                 }`}
               >
                 {category}
@@ -416,9 +416,9 @@ export default function Transaction() {
           </div>
         </div>
 
-        <div className="mt-4 text-sm text-gray-400">
+        <div className="mt-4 text-sm text-fin-muted">
           Showing{" "}
-          <span className="text-[#FF6B00] font-bold">{filteredTransactions.length}</span> of{" "}
+          <span className="text-fin-accent font-bold">{filteredTransactions.length}</span> of{" "}
           <span className="font-bold">{transactions.length}</span> transactions
         </div>
       </div>
@@ -428,14 +428,14 @@ export default function Transaction() {
         <div className="flex justify-end items-center px-4 pt-4">
           <button
             onClick={exportToCSV}
-            className="px-3 py-2 bg-[#FF6B00] text-[whitesmoke] text-sm font-bold rounded-md hover:opacity-90 transition"
+            className="px-3 py-2 bg-fin-accent text-[whitesmoke] text-sm font-bold rounded-md hover:opacity-90 transition"
           >
             Export CSV
           </button>
         </div>
         <table className="table w-full border-collapse">
           <thead>
-            <tr className="bg-[#111111] text-[#FF6B00] border-b border-[#1F1F1F] uppercase tracking-widest text-sm">
+            <tr className="bg-fin-surface text-fin-accent border-b border-[#1F1F1F] uppercase tracking-widest text-sm">
               <th className="py-4 px-6 font-bold">Date</th>
               <th className="py-4 px-6 font-bold">Description</th>
               <th className="py-4 px-6 font-bold text-right">Amount</th>
@@ -449,7 +449,7 @@ export default function Transaction() {
                 key={i}
                 className="border-b border-[#1F1F1F]/50 hover:bg-[#1a1a1a] transition-colors"
               >
-                <td className="py-4 px-6 text-gray-400 whitespace-nowrap">{data.Date}</td>
+                <td className="py-4 px-6 text-fin-muted whitespace-nowrap">{data.Date}</td>
                 <td
                   className="py-4 px-6 font-medium max-w-sm truncate"
                   title={data.Description}
@@ -458,7 +458,7 @@ export default function Transaction() {
                 </td>
                 <td
                   className={`py-4 px-6 font-black text-right whitespace-nowrap ${
-                    Number(data.Amount) > 0 ? "text-[#00C49F]" : "text-white"
+                    Number(data.Amount) > 0 ? "text-fin-success" : "text-fin-text"
                   }`}
                 >
                   {Number(data.Amount) > 0 ? "+" : ""}
@@ -466,7 +466,7 @@ export default function Transaction() {
                   {Math.abs(Number(data.Amount)).toLocaleString()}
                 </td>
                 <td className="py-4 px-6">
-                  <span className="bg-[#1F1F1F] text-gray-300 px-3 py-1 text-xs font-bold uppercase tracking-wider rounded-sm border border-[#2a2a2a] flex items-center gap-2 w-fit">
+                  <span className="bg-[#1F1F1F] text-gray-300 px-3 py-1 text-xs font-bold uppercase tracking-wider rounded-sm border border-fin-border-strong flex items-center gap-2 w-fit">
                     <span>{categoryIcons[data.category] || categoryIcons[categorize(data.Description)] || "📌"}</span>
                     {data.category || categorize(data.Description)}
                   </span>
@@ -476,14 +476,14 @@ export default function Transaction() {
                     <button
                       onClick={() => handleEdit(i)}
                       title="Edit transaction"
-                      className="p-2 rounded-sm border border-[#2a2a2a] bg-[#1F1F1F] text-gray-400 hover:text-[#FF6B00] hover:border-[#FF6B00] transition-colors"
+                      className="p-2 rounded-sm border border-fin-border-strong bg-[#1F1F1F] text-fin-muted hover:text-fin-accent hover:border-fin-accent transition-colors"
                     >
                       ✏️
                     </button>
                     <button
                       onClick={() => handleDelete(i)}
                       title="Delete transaction"
-                      className="p-2 rounded-sm border border-[#2a2a2a] bg-[#1F1F1F] text-gray-400 hover:text-red-500 hover:border-red-500 transition-colors"
+                      className="p-2 rounded-sm border border-fin-border-strong bg-[#1F1F1F] text-fin-muted hover:text-red-500 hover:border-red-500 transition-colors"
                     >
                       🗑️
                     </button>
@@ -496,9 +496,9 @@ export default function Transaction() {
       </div>
     </div>
   ) : (
-    <div className="flex flex-col items-center justify-center h-full min-h-[60vh]">
-      <div className="retro-card p-12 flex flex-col items-center max-w-md text-center border-[#FF6B00]/20 animate-in fade-in zoom-in-95 duration-500 transition-all duration-300 hover:border-[#FF6B00]/28">
-        <div className="w-16 h-16 bg-[#FF6B00]/10 flex items-center justify-center rounded-full mb-6 text-[#FF6B00]">
+    <div className="flex flex-col items-center justify-center h-full min-h-[50vh]">
+      <div className="retro-card p-12 flex flex-col items-center max-w-md text-center border-fin-accent/20 animate-in fade-in zoom-in-95 duration-500 transition-all duration-300 hover:border-fin-accent/28">
+        <div className="w-16 h-16 bg-fin-accent/10 flex items-center justify-center rounded-full mb-6 text-fin-accent">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="32"
@@ -518,10 +518,10 @@ export default function Transaction() {
             <line x1="3" y1="18" x2="3.01" y2="18"></line>
           </svg>
         </div>
-        <h2 className="text-2xl font-black tracking-wider text-white mb-2 uppercase">
+        <h2 className="text-2xl font-black tracking-wider text-fin-text mb-2 uppercase">
           No Transactions
         </h2>
-       <p className="text-gray-400 mb-8 leading-relaxed min-h-[96px] flex items-center">
+       <p className="text-fin-muted mb-8 leading-relaxed min-h-[96px] flex items-center">
         No transactions found. Upload your data to view the history.
        </p>
         <Link to="/settings" className="retro-btn">

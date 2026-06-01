@@ -10,17 +10,17 @@ import { useModal } from "../context/ModalContext";
 // REUSABLE SECTION COMPONENT
 // =========================
 const Section = ({ title, subtitle, children, right }) => (
-  <div className="w-full rounded-[24px] border border-[#2a2a2a] bg-[#141414] p-6 md:p-8 transition-all duration-300 hover:border-[#FF6B00]/20">
+  <div className="w-full rounded-[24px] border border-fin-border-strong bg-[#141414] p-6 md:p-8 transition-all duration-300 hover:border-fin-accent/20">
 
     <div className="mb-8 flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
 
       <div className="space-y-2">
-        <h2 className="text-[28px] font-black uppercase tracking-[0.22em] text-[#FF6B00]">
+        <h2 className="text-[28px] font-black uppercase tracking-[0.22em] text-fin-accent">
           {title}
         </h2>
 
         {subtitle && (
-          <p className="text-sm text-gray-500">
+          <p className="text-sm text-fin-muted">
             {subtitle}
           </p>
         )}
@@ -201,14 +201,14 @@ export default function Settings() {
     <div className="w-full space-y-6">
 
       {successMessage && (
-        <div className="rounded-2xl border border-[#FF6B00]/30 bg-[#111] px-5 py-4 text-sm font-bold tracking-wide text-[#FF6B00] uppercase">
+        <div className="rounded-2xl border border-fin-accent/30 bg-fin-surface px-5 py-4 text-sm font-bold tracking-wide text-fin-accent uppercase">
           {successMessage}
         </div>
       )}
 
       {loading && (
         <div className="flex justify-center py-2">
-          <span className="loading loading-spinner loading-lg text-[#FF6B00]" />
+          <span className="loading loading-spinner loading-lg text-fin-accent" />
         </div>
       )}
 
@@ -217,15 +217,15 @@ export default function Settings() {
         title="Data Source"
         subtitle="Upload CSV or load demo financial data"
         right={
-          <div className="flex overflow-hidden rounded-xl border border-[#222] self-start">
+          <div className="flex overflow-hidden rounded-xl border border-fin-border self-start">
             {["replace", "append"].map((mode) => (
               <button
                 key={mode}
                 onClick={() => setImportMode(mode)}
                 className={`h-[42px] px-5 text-xs font-bold uppercase transition-all ${
                   importMode === mode
-                    ? "bg-[#FF6B00] text-[whitesmoke]"
-                    : "bg-[#111] text-gray-400 hover:text-white"
+                    ? "bg-fin-accent text-[whitesmoke]"
+                    : "bg-fin-surface text-fin-muted hover:text-fin-text"
                 }`}
               >
                 {mode}
@@ -239,7 +239,7 @@ export default function Settings() {
             type="file"
             accept=".csv"
             onChange={handleFile}
-            className="file-input h-[48px] w-full rounded-xl border border-[#222] bg-[#111] text-white"
+            className="file-input h-[48px] w-full rounded-xl border border-fin-border bg-fin-surface text-fin-text"
           />
 
           <button
@@ -254,7 +254,7 @@ export default function Settings() {
                 setSuccessMessage("Demo Data Loaded!");
                 setTimeout(() => setSuccessMessage(""), 3000);
               }}
-            className="h-[48px] min-w-[240px] rounded-xl bg-[#FF6B00] px-8 text-sm font-black uppercase text-black"
+            className="h-[48px] min-w-[240px] rounded-xl bg-fin-accent px-8 text-sm font-black uppercase text-black"
           >
             Load Demo Data
           </button>
@@ -268,7 +268,7 @@ export default function Settings() {
         right={
           <button
             onClick={() => setShowManualEntry(!showManualEntry)}
-            className="rounded-xl border border-[#222] px-5 py-2 text-sm font-semibold uppercase text-[whitesmoke]"
+            className="rounded-xl border border-fin-border px-5 py-2 text-sm font-semibold uppercase text-[whitesmoke]"
           >
             {showManualEntry ? "Hide Form" : "Show Form"}
           </button>
@@ -281,7 +281,7 @@ export default function Settings() {
 
               {/* DATE — Fix: no UTC parsing, split directly */}
               <div className="space-y-2">
-                <label className="text-xs font-bold uppercase text-gray-500">
+                <label className="text-xs font-bold uppercase text-fin-muted">
                   Date
                 </label>
                 <input
@@ -302,13 +302,13 @@ export default function Settings() {
                       Date: `${day}/${month}/${year}`,
                     });
                   }}
-                  className="w-full rounded-xl border border-[#222] bg-[#111] p-4 text-white"
+                  className="w-full rounded-xl border border-fin-border bg-fin-surface p-4 text-fin-text"
                 />
               </div>
 
               {/* CATEGORY — Fix: added back, was missing */}
               <div className="space-y-2">
-                <label className="text-xs font-bold uppercase text-gray-500">
+                <label className="text-xs font-bold uppercase text-fin-muted">
                   Category
                 </label>
                 <select
@@ -319,7 +319,7 @@ export default function Settings() {
                       Category: e.target.value,
                     })
                   }
-                  className="w-full rounded-xl border border-[#222] bg-[#111] p-4 text-white"
+                  className="w-full rounded-xl border border-fin-border bg-fin-surface p-4 text-fin-text"
                 >
                   {CATEGORIES.map((cat) => (
                     <option key={cat} value={cat}>
@@ -331,7 +331,7 @@ export default function Settings() {
 
               {/* DESCRIPTION */}
               <div className="space-y-2">
-                <label className="text-xs font-bold uppercase text-gray-500">
+                <label className="text-xs font-bold uppercase text-fin-muted">
                   Description
                 </label>
                 <input
@@ -345,23 +345,23 @@ export default function Settings() {
                       Description: e.target.value,
                     })
                   }
-                  className="w-full rounded-xl border border-[#222] bg-[#111] p-4 text-white"
+                  className="w-full rounded-xl border border-fin-border bg-fin-surface p-4 text-fin-text"
                 />
               </div>
 
               {/* AMOUNT with Income/Expense toggle */}
               <div className="space-y-2">
-                <label className="text-xs font-bold uppercase text-gray-500">
+                <label className="text-xs font-bold uppercase text-fin-muted">
                   Type
                 </label>
-                <div className="flex rounded-xl overflow-hidden border border-[#222]">
+                <div className="flex rounded-xl overflow-hidden border border-fin-border">
                   <button
                     type="button"
                     onClick={() => setTransactionType("expense")}
                     className={`flex-1 py-3 text-sm font-bold uppercase tracking-wider transition-colors ${
                       transactionType === "expense"
-                        ? "bg-[#FF6B6B] text-white"
-                        : "bg-[#111] text-gray-400 hover:text-white"
+                        ? "bg-fin-error text-fin-text"
+                        : "bg-fin-surface text-fin-muted hover:text-fin-text"
                     }`}
                   >
                     Expense
@@ -371,8 +371,8 @@ export default function Settings() {
                     onClick={() => setTransactionType("income")}
                     className={`flex-1 py-3 text-sm font-bold uppercase tracking-wider transition-colors ${
                       transactionType === "income"
-                        ? "bg-[#00C49F] text-white"
-                        : "bg-[#111] text-gray-400 hover:text-white"
+                        ? "bg-fin-success text-fin-text"
+                        : "bg-fin-surface text-fin-muted hover:text-fin-text"
                     }`}
                   >
                     Income
@@ -381,7 +381,7 @@ export default function Settings() {
               </div>
 
               <div className="space-y-2">
-                <label className="text-xs font-bold uppercase text-gray-500">
+                <label className="text-xs font-bold uppercase text-fin-muted">
                   Amount
                 </label>
                 <input
@@ -397,7 +397,7 @@ export default function Settings() {
                       Amount: e.target.value,
                     })
                   }
-                  className="w-full rounded-xl border border-[#222] bg-[#111] p-4 text-white"
+                  className="w-full rounded-xl border border-fin-border bg-fin-surface p-4 text-fin-text"
                 />
               </div>
             </div>
@@ -405,7 +405,7 @@ export default function Settings() {
             <div className="flex gap-3">
               <button
                 type="submit"
-                className="rounded-xl bg-[#FF6B00] px-7 py-3 font-black uppercase text-[whitesmoke]"
+                className="rounded-xl bg-fin-accent px-7 py-3 font-black uppercase text-[whitesmoke]"
               >
                 Add Transaction
               </button>
@@ -430,7 +430,7 @@ export default function Settings() {
             const selected = CURRENCIES.find((c) => c.code === e.target.value);
             if (selected) updateCurrency(selected);
           }}
-          className="w-full rounded-xl border border-[#222] bg-[#111] p-4 text-white"
+          className="w-full rounded-xl border border-fin-border bg-fin-surface p-4 text-fin-text"
         >
           {CURRENCIES.map((c) => (
             <option key={c.code} value={c.code}>

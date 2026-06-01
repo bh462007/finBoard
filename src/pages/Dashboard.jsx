@@ -154,10 +154,10 @@ return (
               <div className="fin-metric-card h-full animate-in fade-in duration-500">
                 <div className="flex items-center justify-between mb-4">
                   <div>
-                    <p className="text-xs font-bold tracking-widest uppercase text-gray-500 mb-1">
+                    <p className="text-xs font-bold tracking-widest uppercase text-fin-muted mb-1">
                       Income
                     </p>
-                    <p className="text-[#00C49F] text-3xl font-black">
+                    <p className="text-fin-success text-3xl font-black">
                       {currency.symbol}
                       {totalIncome.toLocaleString()}
                     </p>
@@ -169,19 +169,19 @@ return (
                       border: metricBorder || "1px solid rgba(0,196,159,0.2)",
                     }}
                   >
-                    <TrendingUp className="w-5 h-5 text-[#00C49F]" />
+                    <TrendingUp className="w-5 h-5 text-fin-success" />
                   </div>
                 </div>
-                <p className="text-xs text-gray-600">Total income received</p>
+                <p className="text-xs text-fin-muted">Total income received</p>
               </div>
 
               <div className="fin-metric-card h-full animate-in fade-in duration-500">
                 <div className="flex items-center justify-between mb-4">
                   <div>
-                    <p className="text-xs font-bold tracking-widest uppercase text-gray-500 mb-1">
+                    <p className="text-xs font-bold tracking-widest uppercase text-fin-muted mb-1">
                       Spent
                     </p>
-                    <p className="text-[#FF6B6B] text-3xl font-black">
+                    <p className="text-fin-error text-3xl font-black">
                       {currency.symbol}
                       {Math.abs(totalExpense).toLocaleString()}
                     </p>
@@ -193,19 +193,19 @@ return (
                       border: metricBorder || "1px solid rgba(255,107,107,0.2)",
                     }}
                   >
-                    <TrendingDown className="w-5 h-5 text-[#FF6B6B]" />
+                    <TrendingDown className="w-5 h-5 text-fin-error" />
                   </div>
                 </div>
-                <p className="text-xs text-gray-600">Total expenses tracked</p>
+                <p className="text-xs text-fin-muted">Total expenses tracked</p>
               </div>
 
               <div className="fin-metric-card h-full animate-in fade-in duration-500">
                 <div className="flex items-center justify-between mb-4">
                   <div>
-                    <p className="text-xs font-bold tracking-widest uppercase text-gray-500 mb-1">
+                    <p className="text-xs font-bold tracking-widest uppercase text-fin-muted mb-1">
                       Savings
                     </p>
-                    <p className="text-[#0088FE] text-3xl font-black">
+                    <p className="text-fin-info text-3xl font-black">
                       {currency.symbol}
                       {savings.toLocaleString()}
                     </p>
@@ -217,16 +217,16 @@ return (
                       border: metricBorder || "1px solid rgba(0,136,254,0.2)",
                     }}
                   >
-                    <PiggyBank className="w-5 h-5 text-[#0088FE]" />
+                    <PiggyBank className="w-5 h-5 text-fin-info" />
                   </div>
                 </div>
-                <p className="text-xs text-gray-600">Net savings balance</p>
+                <p className="text-xs text-fin-muted">Net savings balance</p>
               </div>
             </div>
 
             <section className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-stretch">
-              <div className="retro-card p-4 flex flex-col items-center justify-center min-h-[400px] h-full animate-in fade-in duration-500">
-                <h3 className="text-fin-orange font-bold tracking-widest text-sm uppercase self-start mb-4 px-4 pt-2">
+              <div className="retro-card p-4 flex flex-col items-center justify-center min-h-[320px] h-full animate-in fade-in duration-500">
+                <h3 className="text-fin-accent font-bold tracking-widest text-sm uppercase self-start mb-4 px-4 pt-2">
                   Spending by Category
                 </h3>
                 <ResponsiveContainer width="100%" height={350}>
@@ -248,8 +248,8 @@ return (
                 </ResponsiveContainer>
               </div>
 
-              <div className="retro-card p-4 flex flex-col min-h-[400px] h-full animate-in fade-in duration-500">
-                <h3 className="text-fin-orange font-bold tracking-widest text-sm uppercase self-start mb-4 px-4 pt-2">
+              <div className="retro-card p-4 flex flex-col min-h-[320px] h-full animate-in fade-in duration-500">
+                <h3 className="text-fin-accent font-bold tracking-widest text-sm uppercase self-start mb-4 px-4 pt-2">
                   Monthly Overview
                 </h3>
                 <ResponsiveContainer width="100%" height={350}>
@@ -266,9 +266,9 @@ return (
             </section>
           </>
         ) : (
-          <div className="flex flex-col items-center justify-center h-full min-h-[78vh] pt-10 animate-in fade-in duration-500">
-            <div className="retro-card p-12 flex flex-col items-center max-w-md text-center border-[#FF6B00]/20 transition-all duration-300 hover:border-[#FF6B00]/28">
-              <div className="w-16 h-16 bg-[#FF6B00]/10 flex items-center justify-center rounded-full mb-6 text-[#FF6B00]">
+          <div className="flex flex-col items-center justify-center h-full min-h-[60vh] pt-10 animate-in fade-in duration-500">
+            <div className="retro-card p-12 flex flex-col items-center max-w-md text-center border-fin-accent/20 transition-all duration-300 hover:border-fin-accent/28">
+              <div className="w-16 h-16 bg-fin-accent/10 flex items-center justify-center rounded-full mb-6 text-fin-accent">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="32"
@@ -283,10 +283,10 @@ return (
                   <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
                 </svg>
               </div>
-              <h2 className="text-2xl font-black tracking-wider text-white mb-2 uppercase">
+              <h2 className="text-2xl font-black tracking-wider text-fin-text mb-2 uppercase">
                 No Data Found
               </h2>
-              <p className="text-gray-400 mb-8 leading-relaxed min-h-[88px] flex items-center justify-center">
+              <p className="text-fin-muted mb-8 leading-relaxed min-h-[88px] flex items-center justify-center">
                 Upload your transaction history from settings to start tracking your finances.
               </p>
               <Link to="/settings" className="retro-btn">
@@ -303,13 +303,13 @@ return (
           setErrorMsg("");
           setShowForm(!showForm);
         }}
-        className="fixed bottom-8 right-8 z-50 w-14 h-14 rounded-full bg-[#FF6B00] text-white flex items-center justify-center shadow-lg hover:bg-[#e05e00] transition-all duration-200 hover:scale-110"
+        className="fixed bottom-8 right-8 z-50 w-14 h-14 rounded-full bg-fin-accent text-fin-text flex items-center justify-center shadow-lg hover:bg-[#e05e00] transition-all duration-200 hover:scale-110"
       >
         {showForm ? <X className="w-6 h-6" /> : <Plus className="w-6 h-6" />}
       </button>
 
       {successMsg && (
-        <div className="fixed bottom-24 right-8 z-50 rounded-xl border border-green-500/40 bg-[#111] px-4 py-3 text-sm font-bold text-green-400 shadow-lg">
+        <div className="fixed bottom-24 right-8 z-50 rounded-xl border border-green-500/40 bg-fin-surface px-4 py-3 text-sm font-bold text-green-400 shadow-lg">
           {successMsg}
         </div>
       )}
@@ -318,7 +318,7 @@ return (
       {showForm && (
         <div className="fixed inset-0 z-40 flex items-center justify-center bg-black/60">
           <div className="retro-card p-6 w-full max-w-md mx-4 animate-in fade-in duration-200">
-            <h3 className="text-fin-orange font-bold tracking-widest text-sm uppercase mb-4">
+            <h3 className="text-fin-accent font-bold tracking-widest text-sm uppercase mb-4">
               Quick Add Transaction
             </h3>
             <form onSubmit={handleQuickAdd} className="flex flex-col gap-3">
@@ -341,14 +341,14 @@ return (
                 value={form.Description}
                 onChange={(e) => setForm({ ...form, Description: e.target.value })}
               />
-              <div className="flex rounded-xl overflow-hidden border border-[#222]">
+              <div className="flex rounded-xl overflow-hidden border border-fin-border">
                 <button
                   type="button"
                   onClick={() => setTransactionType("expense")}
                   className={`flex-1 py-3 text-sm font-bold uppercase tracking-wider transition-colors ${
                     transactionType === "expense"
-                      ? "bg-[#FF6B6B] text-white"
-                      : "bg-[#111] text-gray-400 hover:text-white"
+                      ? "bg-fin-error text-fin-text"
+                      : "bg-fin-surface text-fin-muted hover:text-fin-text"
                   }`}
                 >
                   Expense
@@ -358,8 +358,8 @@ return (
                   onClick={() => setTransactionType("income")}
                   className={`flex-1 py-3 text-sm font-bold uppercase tracking-wider transition-colors ${
                     transactionType === "income"
-                      ? "bg-[#00C49F] text-white"
-                      : "bg-[#111] text-gray-400 hover:text-white"
+                      ? "bg-fin-success text-fin-text"
+                      : "bg-fin-surface text-fin-muted hover:text-fin-text"
                   }`}
                 >
                   Income
@@ -387,7 +387,7 @@ return (
                     setErrorMsg("");
                     setShowForm(false);
                   }}
-                  className="flex-1 px-4 py-2 border border-gray-600 text-gray-400 hover:text-white transition-colors font-bold uppercase tracking-wider text-sm"
+                  className="flex-1 px-4 py-2 border border-fin-border text-fin-muted hover:text-fin-text transition-colors font-bold uppercase tracking-wider text-sm"
                 >
                   Cancel
                 </button>

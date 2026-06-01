@@ -140,7 +140,7 @@ export default function InsightCards({ transactions }) {
               <span className="text-[11px] font-bold tracking-wider text-zinc-500 uppercase">{card.title}</span>
               <div className="p-2 bg-zinc-900 rounded-lg border border-zinc-800">{card.icon}</div>
             </div>
-            <h2 className={`text-2xl font-bold text-white mb-1 tracking-tight uppercase ${card.valueClass || ''}`}>
+            <h2 className={`text-2xl font-bold text-fin-text mb-1 tracking-tight uppercase ${card.valueClass || ''}`}>
               {card.value}
             </h2>
           </div>
