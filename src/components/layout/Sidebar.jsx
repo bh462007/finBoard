@@ -1,5 +1,5 @@
 import { Link, useLocation } from "react-router-dom";
-import finbGif from "../../assets/finb.gif";
+import finbGif from "../../assets/finboard.gif";
 import { LayoutDashboard, PiggyBank, ArrowLeftRight, BarChart2, Settings } from "lucide-react";
 
 export default function Sidebar() {
