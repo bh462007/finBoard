@@ -3,7 +3,11 @@ import { createClient } from "@supabase/supabase-js";
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL?.trim();
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY?.trim();
 
+export let isConfigured = true;
+export let configErrorMessage = null;
+
 if (!supabaseUrl || !supabaseAnonKey) {
+  isConfigured = false;
   const missing = [
     !supabaseUrl ? "VITE_SUPABASE_URL" : null,
     !supabaseAnonKey ? "VITE_SUPABASE_ANON_KEY" : null,
@@ -11,15 +15,18 @@ if (!supabaseUrl || !supabaseAnonKey) {
     .filter(Boolean)
     .join(", ");
 
-  throw new Error(
-    `Missing ${missing} environment variable(s). Create a .env file in the project root with:\nVITE_SUPABASE_URL=https://your-project-ref.supabase.co\nVITE_SUPABASE_ANON_KEY=your-anon-key\nThen restart the Vite dev server.`
-  );
+  configErrorMessage = `Missing ${missing} environment variable(s). Please create a .env file in the project root.`;
+} else if (!/^https?:\/\//i.test(supabaseUrl)) {
+  isConfigured = false;
+  configErrorMessage = "Invalid VITE_SUPABASE_URL. Use the full URL, for example: https://your-project-ref.supabase.co";
 }
 
-if (!/^https?:\/\//i.test(supabaseUrl)) {
-  throw new Error(
-    "Invalid VITE_SUPABASE_URL. Use the full URL, for example: https://your-project-ref.supabase.co"
-  );
-}
-
-export const supabase = createClient(supabaseUrl, supabaseAnonKey);
+// Export a dummy client if not configured so the app doesn't crash on import
+export const supabase = isConfigured 
+  ? createClient(supabaseUrl, supabaseAnonKey) 
+  : { 
+      auth: { 
+        getSession: async () => ({ data: { session: null }, error: null }),
+        onAuthStateChange: () => ({ data: { subscription: { unsubscribe: () => {} } } })
+      } 
+    };

@@ -15,6 +15,13 @@ const getFriendlyAuthError = (error, fallbackMessage) => {
     return 'Unable to reach the authentication service. Check your connection and try again.';
   }
 
+  if (
+    normalizedMessage.includes('rate limit') || 
+    normalizedMessage.includes('too many requests')
+  ) {
+    return 'You are doing that too often. Please wait a moment and try again.';
+  }
+
   return fallbackMessage || message || 'An unexpected authentication error occurred. Please try again.';
 };
 

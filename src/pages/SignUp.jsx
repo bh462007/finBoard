@@ -16,6 +16,7 @@ export default function SignUp() {
   const [loading, setLoading] = React.useState(false);
   const [authError, setAuthError] = React.useState('');
   const [authSuccess, setAuthSuccess] = React.useState('');
+  const [needsResend, setNeedsResend] = React.useState(false);
 
   /* ── Password strength helper ──────────────────────────────────── */
   const getStrength = (pw) => {
@@ -65,6 +66,7 @@ export default function SignUp() {
     e.preventDefault();
     setAuthError('');
     setAuthSuccess('');
+    setNeedsResend(false);
     if (!validate()) return;
 
     setLoading(true);
@@ -76,6 +78,11 @@ export default function SignUp() {
       });
 
       if (error) {
+        if (error.message.includes('rate limit') || error.message.includes('too many requests')) {
+           setAuthError('You are doing that too often. Please wait a moment and try again.');
+           return;
+        }
+
         const friendly = {
           'User already registered': 'An account with this email already exists.',
           'Password should be at least 6 characters': 'Password must be at least 6 characters.',
@@ -87,7 +94,8 @@ export default function SignUp() {
 
       // Detect "soft duplicate" (user exists but unconfirmed)
       if (data?.user?.identities?.length === 0) {
-        setAuthError('An account with this email already exists.');
+        setAuthError('An account with this email already exists but is not verified.');
+        setNeedsResend(true);
         return;
       }
 
@@ -99,6 +107,28 @@ export default function SignUp() {
       }
     } catch {
       setAuthError('An unexpected error occurred. Please try again.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleResend = async () => {
+    setLoading(true);
+    setAuthError('');
+    try {
+      const { error } = await supabase.auth.resend({ type: 'signup', email });
+      if (error) {
+        if (error.message.includes('rate limit') || error.message.includes('too many requests')) {
+           setAuthError('You are doing that too often. Please wait a moment and try again.');
+        } else {
+           setAuthError(error.message);
+        }
+      } else {
+        setAuthSuccess('Verification email sent! Please check your inbox.');
+        setNeedsResend(false);
+      }
+    } catch {
+      setAuthError('An unexpected error occurred while resending.');
     } finally {
       setLoading(false);
     }
@@ -121,7 +151,19 @@ export default function SignUp() {
         {authError && (
           <div className="auth-alert auth-alert--error" id="signup-error-alert">
             <span>⚠</span>
-            <span>{authError}</span>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem', flex: 1 }}>
+              <span>{authError}</span>
+              {needsResend && (
+                <button 
+                  type="button"
+                  onClick={handleResend} 
+                  disabled={loading}
+                  style={{ textDecoration: 'underline', cursor: loading ? 'not-allowed' : 'pointer', background: 'none', border: 'none', color: 'inherit', padding: 0, textAlign: 'left', fontSize: '0.85em', opacity: 0.9 }}
+                >
+                  Resend verification email
+                </button>
+              )}
+            </div>
             <button onClick={() => setAuthError('')} className="auth-alert-close">✕</button>
           </div>
         )}

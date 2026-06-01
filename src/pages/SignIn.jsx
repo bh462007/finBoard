@@ -16,6 +16,7 @@ export default function SignIn() {
   const [authError, setAuthError] = React.useState('');
   const [authSuccess, setAuthSuccess] = React.useState('');
   const [forgotOpen, setForgotOpen] = React.useState(false);
+  const [needsResend, setNeedsResend] = React.useState(false);
 
   /* ── Validation ────────────────────────────────────────────────── */
   const validate = () => {
@@ -39,6 +40,7 @@ export default function SignIn() {
     e.preventDefault();
     setAuthError('');
     setAuthSuccess('');
+    setNeedsResend(false);
     if (!validate()) return;
 
     setLoading(true);
@@ -46,9 +48,19 @@ export default function SignIn() {
       const { data, error } = await supabase.auth.signInWithPassword({ email, password });
 
       if (error) {
+        if (error.message.includes('rate limit') || error.message.includes('too many requests')) {
+           setAuthError('You are doing that too often. Please wait a moment and try again.');
+           return;
+        }
+
+        if (error.message === 'Email not confirmed') {
+           setAuthError('Please verify your email before signing in.');
+           setNeedsResend(true);
+           return;
+        }
+
         const friendly = {
           'Invalid login credentials': 'Incorrect email or password.',
-          'Email not confirmed': 'Please verify your email before signing in.',
           'Invalid email or password': 'Incorrect email or password.',
         };
         setAuthError(friendly[error.message] || error.message);
@@ -60,6 +72,28 @@ export default function SignIn() {
       }
     } catch {
       setAuthError('An unexpected error occurred. Please try again.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleResend = async () => {
+    setLoading(true);
+    setAuthError('');
+    try {
+      const { error } = await supabase.auth.resend({ type: 'signup', email });
+      if (error) {
+        if (error.message.includes('rate limit') || error.message.includes('too many requests')) {
+           setAuthError('You are doing that too often. Please wait a moment and try again.');
+        } else {
+           setAuthError(error.message);
+        }
+      } else {
+        setAuthSuccess('Verification email sent! Please check your inbox.');
+        setNeedsResend(false);
+      }
+    } catch {
+      setAuthError('An unexpected error occurred while resending.');
     } finally {
       setLoading(false);
     }
@@ -83,7 +117,19 @@ export default function SignIn() {
         {authError && (
           <div className="auth-alert auth-alert--error" id="signin-error-alert">
             <span>⚠</span>
-            <span>{authError}</span>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem', flex: 1 }}>
+              <span>{authError}</span>
+              {needsResend && (
+                <button 
+                  type="button"
+                  onClick={handleResend} 
+                  disabled={loading}
+                  style={{ textDecoration: 'underline', cursor: loading ? 'not-allowed' : 'pointer', background: 'none', border: 'none', color: 'inherit', padding: 0, textAlign: 'left', fontSize: '0.85em', opacity: 0.9 }}
+                >
+                  Resend verification email
+                </button>
+              )}
+            </div>
             <button onClick={() => setAuthError('')} className="auth-alert-close">✕</button>
           </div>
         )}
