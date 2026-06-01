@@ -91,16 +91,16 @@ export default function Goals() {
       {/* HEADER */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-black uppercase tracking-widest text-fin-text">
+          <h1 className="text-2xl font-black uppercase tracking-widest text-white">
             Savings Goals
           </h1>
-          <p className="text-sm text-fin-muted mt-1">
+          <p className="text-sm text-gray-500 mt-1">
             Track your financial targets
           </p>
         </div>
         <button
           onClick={() => setShowForm(!showForm)}
-          className="rounded-xl bg-fin-accent px-5 py-2.5 text-sm font-black uppercase text-black"
+          className="rounded-xl bg-[#FF6B00] px-5 py-2.5 text-sm font-black uppercase text-black"
         >
           {showForm ? "Cancel" : "+ New Goal"}
         </button>
@@ -108,13 +108,13 @@ export default function Goals() {
 
       {/* ADD GOAL FORM */}
       {showForm && (
-        <div className="w-full rounded-[24px] border border-fin-border bg-[#141414] p-6">
-          <h2 className="text-fin-accent font-black uppercase tracking-widest text-lg mb-6">
+        <div className="w-full rounded-[24px] border border-[#222] bg-[#141414] p-6">
+          <h2 className="text-[#FF6B00] font-black uppercase tracking-widest text-lg mb-6">
             New Goal
           </h2>
           <form onSubmit={handleAddGoal} className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div className="space-y-2">
-              <label className="text-xs font-bold uppercase text-fin-muted">
+              <label className="text-xs font-bold uppercase text-gray-500">
                 Goal Name
               </label>
               <input
@@ -122,12 +122,12 @@ export default function Goals() {
                 placeholder="e.g. New Laptop"
                 value={form.name}
                 onChange={(e) => setForm({ ...form, name: e.target.value })}
-                className="w-full rounded-xl border border-fin-border bg-fin-surface p-4 text-fin-text"
+                className="w-full rounded-xl border border-[#222] bg-[#111] p-4 text-white"
                 required
               />
             </div>
             <div className="space-y-2">
-              <label className="text-xs font-bold uppercase text-fin-muted">
+              <label className="text-xs font-bold uppercase text-gray-500">
                 Target Amount ({currency.symbol})
               </label>
               <input
@@ -136,26 +136,26 @@ export default function Goals() {
                 placeholder="e.g. 50000"
                 value={form.target}
                 onChange={(e) => setForm({ ...form, target: e.target.value })}
-                className="w-full rounded-xl border border-fin-border bg-fin-surface p-4 text-fin-text"
+                className="w-full rounded-xl border border-[#222] bg-[#111] p-4 text-white"
                 required
               />
             </div>
             <div className="space-y-2">
-              <label className="text-xs font-bold uppercase text-fin-muted">
+              <label className="text-xs font-bold uppercase text-gray-500">
                 Target Date
               </label>
               <input
                 type="date"
                 value={form.deadline}
                 onChange={(e) => setForm({ ...form, deadline: e.target.value })}
-                className="w-full rounded-xl border border-fin-border bg-fin-surface p-4 text-fin-text"
+                className="w-full rounded-xl border border-[#222] bg-[#111] p-4 text-white"
                 required
               />
             </div>
             <div className="md:col-span-3">
               <button
                 type="submit"
-                className="rounded-xl bg-fin-accent px-7 py-3 font-black uppercase text-black"
+                className="rounded-xl bg-[#FF6B00] px-7 py-3 font-black uppercase text-black"
               >
                 Add Goal
               </button>
@@ -165,20 +165,20 @@ export default function Goals() {
       )}
 
       {/* CURRENT SAVINGS BANNER */}
-      <div className="w-full rounded-[24px] border border-fin-success/20 bg-[#0a1a12] p-6 flex items-center justify-between">
+      <div className="w-full rounded-[24px] border border-[#00C49F]/20 bg-[#0a1a12] p-6 flex items-center justify-between">
         <div>
-          <p className="text-xs font-bold uppercase tracking-widest text-fin-muted">
+          <p className="text-xs font-bold uppercase tracking-widest text-gray-500">
             Current Total Savings
           </p>
-          <p className="text-3xl font-black text-fin-success mt-1">
+          <p className="text-3xl font-black text-[#00C49F] mt-1">
             {currency.symbol}{totalSavings.toLocaleString()}
           </p>
         </div>
         <div className="text-right">
-          <p className="text-xs font-bold uppercase tracking-widest text-fin-muted">
+          <p className="text-xs font-bold uppercase tracking-widest text-gray-500">
             Avg Monthly Savings
           </p>
-          <p className={`text-xl font-black mt-1 ${avgMonthlySavings >= 0 ? "text-fin-success" : "text-fin-error"}`}>
+          <p className={`text-xl font-black mt-1 ${avgMonthlySavings >= 0 ? "text-[#00C49F]" : "text-[#FF6B6B]"}`}>
             {currency.symbol}{Math.abs(avgMonthlySavings).toLocaleString(undefined, { maximumFractionDigits: 0 })}
           </p>
         </div>
@@ -186,12 +186,12 @@ export default function Goals() {
 
       {/* GOALS LIST */}
       {goals.length === 0 ? (
-        <div className="w-full rounded-[24px] border border-fin-border bg-[#141414] p-12 flex flex-col items-center text-center">
+        <div className="w-full rounded-[24px] border border-[#222] bg-[#141414] p-12 flex flex-col items-center text-center">
           <p className="text-4xl mb-4">🎯</p>
-          <h2 className="text-fin-text font-black uppercase tracking-wider text-xl mb-2">
+          <h2 className="text-white font-black uppercase tracking-wider text-xl mb-2">
             No Goals Yet
           </h2>
-          <p className="text-fin-muted text-sm">
+          <p className="text-gray-500 text-sm">
             Click "+ New Goal" to set your first savings target.
           </p>
         </div>
@@ -206,20 +206,20 @@ export default function Goals() {
             return (
               <div
                 key={goal.id}
-                className="w-full rounded-[24px] border border-fin-border bg-[#141414] p-6 space-y-4 hover:border-fin-accent/30 transition-all duration-300"
+                className="w-full rounded-[24px] border border-[#222] bg-[#141414] p-6 space-y-4 hover:border-[#FF6B00]/30 transition-all duration-300"
               >
                 <div className="flex items-start justify-between">
                   <div>
-                    <h3 className="text-fin-text font-black uppercase tracking-wider">
+                    <h3 className="text-white font-black uppercase tracking-wider">
                       {goal.name}
                     </h3>
-                    <p className="text-xs text-fin-muted mt-1">
+                    <p className="text-xs text-gray-500 mt-1">
                       Target: {currency.symbol}{goal.target.toLocaleString()} · Due {new Date(goal.deadline).toLocaleDateString("en-IN", { month: "short", year: "numeric" })}
                     </p>
                   </div>
                   <button
                     onClick={() => handleDelete(goal.id)}
-                    className="text-fin-muted hover:text-red-400 transition-colors text-xs uppercase font-bold"
+                    className="text-gray-600 hover:text-red-400 transition-colors text-xs uppercase font-bold"
                   >
                     Delete
                   </button>
@@ -227,14 +227,14 @@ export default function Goals() {
 
                 {/* PROGRESS BAR */}
                 <div className="space-y-1">
-                  <div className="flex justify-between text-xs text-fin-muted">
+                  <div className="flex justify-between text-xs text-gray-500">
                     <span>{progress.toFixed(1)}% saved</span>
                     <span>{currency.symbol}{Math.min(totalSavings, goal.target).toLocaleString()} / {currency.symbol}{goal.target.toLocaleString()}</span>
                   </div>
-                  <div className="w-full h-3 rounded-full bg-fin-border">
+                  <div className="w-full h-3 rounded-full bg-[#222]">
                     <div
                       className={`h-3 rounded-full transition-all duration-500 ${
-                        isAchieved ? "bg-fin-success" : "bg-fin-accent"
+                        isAchieved ? "bg-[#00C49F]" : "bg-[#FF6B00]"
                       }`}
                       style={{ width: `${progress}%` }}
                     />
@@ -243,18 +243,18 @@ export default function Goals() {
 
                 {/* INSIGHTS */}
                 {isAchieved ? (
-                  <p className="text-fin-success text-xs font-bold uppercase tracking-wider">
+                  <p className="text-[#00C49F] text-xs font-bold uppercase tracking-wider">
                     🎉 Goal Achieved!
                   </p>
                 ) : (
                   <div className="grid grid-cols-2 gap-3">
-                    <div className="rounded-xl bg-fin-surface p-3">
-                      <p className="text-xs text-fin-muted uppercase tracking-wider">Months Left</p>
-                      <p className="text-fin-text font-black text-lg">{monthsLeft}</p>
+                    <div className="rounded-xl bg-[#111] p-3">
+                      <p className="text-xs text-gray-500 uppercase tracking-wider">Months Left</p>
+                      <p className="text-white font-black text-lg">{monthsLeft}</p>
                     </div>
-                    <div className="rounded-xl bg-fin-surface p-3">
-                      <p className="text-xs text-fin-muted uppercase tracking-wider">Need/Month</p>
-                      <p className="text-fin-accent font-black text-lg">
+                    <div className="rounded-xl bg-[#111] p-3">
+                      <p className="text-xs text-gray-500 uppercase tracking-wider">Need/Month</p>
+                      <p className="text-[#FF6B00] font-black text-lg">
                         {currency.symbol}{monthlyNeeded.toLocaleString(undefined, { maximumFractionDigits: 0 })}
                       </p>
                     </div>

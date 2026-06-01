@@ -9,9 +9,9 @@ export default function InsightsDashboard() {
 
   if (!transactions || transactions.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center h-full min-h-[50vh] animate-in fade-in duration-500">
-        <div className="retro-card p-12 flex flex-col items-center max-w-md text-center border-fin-accent/20 transition-all duration-300 hover:border-fin-accent/28">
-          <div className="w-16 h-16 bg-fin-accent/10 flex items-center justify-center rounded-full mb-6 text-fin-accent">
+      <div className="flex flex-col items-center justify-center h-full min-h-[60vh] animate-in fade-in duration-500">
+        <div className="retro-card p-12 flex flex-col items-center max-w-md text-center border-[#FF6B00]/20 transition-all duration-300 hover:border-[#FF6B00]/28">
+          <div className="w-16 h-16 bg-[#FF6B00]/10 flex items-center justify-center rounded-full mb-6 text-[#FF6B00]">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="32"
@@ -28,10 +28,10 @@ export default function InsightsDashboard() {
               <line x1="6" y1="20" x2="6" y2="14"></line>
             </svg>
           </div>
-          <h2 className="text-2xl font-black tracking-wider text-fin-text mb-2 uppercase">
+          <h2 className="text-2xl font-black tracking-wider text-white mb-2 uppercase">
             No Insights Found
           </h2>
-          <p className="text-fin-muted mb-8 leading-relaxed min-h-[96px] flex items-center">
+          <p className="text-gray-400 mb-8 leading-relaxed min-h-[96px] flex items-center">
              Your insights playground is empty. Head over to settings to upload your transaction history or load demo data.
           </p>
           <Link to="/settings" className="retro-btn">
@@ -71,7 +71,7 @@ export default function InsightsDashboard() {
   return (
     <div className="space-y-8 animate-in fade-in duration-500">
       <div>
-        <p className="text-fin-muted text-sm tracking-wider uppercase">
+        <p className="text-gray-400 text-sm tracking-wider uppercase">
           Key observations from your financial data matrix
         </p>
       </div>
