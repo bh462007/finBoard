@@ -117,13 +117,13 @@ export default function InsightCards({ transactions }) {
       title: "TOP SPENDING CATEGORY",
       value: metrics.topCategory,
       subtitle: `₹${metrics.topCatAmt.toLocaleString()} spent — your biggest expense bucket.`,
-      icon: <ShoppingBag className="w-5 h-5" style={{ color: theme === 'light' ? '#8B5CF6' : '#60A5FA' }} />,
+      icon: <ShoppingBag className="w-5 h-5" style={{ color: theme === 'light' ? '#FF6B00' : '#60A5FA' }} />,
     },
     {
       title: "SAVINGS RATE",
       value: `${metrics.savingsRate}%`,
       subtitle: metrics.savingsRate >= 20 ? "Great job! You're saving above the recommended 20% threshold." : "Try reducing non-essential expenses to hit a 20% safety margin.",
-      icon: <PiggyBank className="w-5 h-5" style={{ color: theme === 'light' ? '#A78BFA' : '#F472B6' }} />,
+      icon: <PiggyBank className="w-5 h-5" style={{ color: theme === 'light' ? '#FF8C00' : '#F472B6' }} />,
     },
     {
       title: "MONTH-ON-MONTH EXPENSES",
@@ -146,19 +146,19 @@ export default function InsightCards({ transactions }) {
       title: "NET SAVINGS THIS MONTH",
       value: `₹${metrics.netSavings.toLocaleString()}`,
       subtitle: `Income ₹${metrics.totalIncome.toLocaleString()} minus expenses ₹${metrics.totalExpenses.toLocaleString()}`,
-      icon: <Target className="w-5 h-5" style={{ color: theme === 'light' ? '#8B5CF6' : '#E879F9' }} />,
+      icon: <Target className="w-5 h-5" style={{ color: theme === 'light' ? '#FF6B00' : '#E879F9' }} />,
     },
     {
       title: "MOST ACTIVE MONTH",
       value: metrics.mostActiveMonth,
       subtitle: "The month with the highest combined income and expense activity.",
-      icon: <Calendar className="w-5 h-5" style={{ color: theme === 'light' ? '#8B5CF6' : '#34D399' }} />,
+      icon: <Calendar className="w-5 h-5" style={{ color: theme === 'light' ? '#FF6B00' : '#34D399' }} />,
     },
     {
       title: "AVG MONTHLY INCOME",
       value: `₹${metrics.avgMonthlyIncome.toLocaleString()}`,
       subtitle: "Average income across all recorded months in your history.",
-      icon: <DollarSign className="w-5 h-5" style={{ color: theme === 'light' ? '#8B5CF6' : '#C084FC' }} />,
+      icon: <DollarSign className="w-5 h-5" style={{ color: theme === 'light' ? '#FF6B00' : '#C084FC' }} />,
     }
   ];
 

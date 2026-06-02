@@ -43,12 +43,12 @@ export default function CategoryBreakdown({ transactions }) {
 
     const colorMap = theme === "light"
       ? {
-          bills: "#8B5CF6",
-          food: "#A78BFA",
-          health: "#C4B5FD",
-          shopping: "#DDD6FE",
-          transport: "#EDE9FE",
-          other: "#F5F3FF",
+          bills: "#FF6B00",
+          food: "#FF8C00",
+          health: "#FFA500",
+          shopping: "#FFB732",
+          transport: "#FFC966",
+          other: "#FFDB99",
         }
       : {
           bills: "#ef4444",      // Coral Red
