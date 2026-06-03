@@ -1,15 +1,15 @@
 import React from "react";
 import { DataContext } from "../context/AppContext";
 import { useModal } from "../context/ModalContext";
+import { supabase } from "../lib/supabaseClient";
+import { useAuth } from "../context/AuthContext";
 
 export default function Goals() {
   const { transactions, currency } = React.useContext(DataContext);
   const { showModal } = useModal();
+  const { user } = useAuth();
 
-  const [goals, setGoals] = React.useState(() => {
-    const saved = localStorage.getItem("savingsGoals");
-    return saved ? JSON.parse(saved) : [];
-  });
+  const [goals, setGoals] = React.useState([]);
 
   const [form, setForm] = React.useState({
     name: "",
@@ -20,8 +20,22 @@ export default function Goals() {
   const [showForm, setShowForm] = React.useState(false);
 
   React.useEffect(() => {
-    localStorage.setItem("savingsGoals", JSON.stringify(goals));
-  }, [goals]);
+    async function fetchGoals() {
+      if (!user) {
+        setGoals([]);
+        return;
+      }
+      const { data, error } = await supabase
+        .from('goals')
+        .select('*')
+        .eq('user_id', user.id);
+        
+      if (data && !error) {
+        setGoals(data);
+      }
+    }
+    fetchGoals();
+  }, [user]);
 
   const totalSavings = transactions?.reduce((acc, t) => {
     return acc + Number(t.Amount);
@@ -31,7 +45,7 @@ export default function Goals() {
     if (!transactions || transactions.length === 0) return 0;
     const months = {};
     transactions.forEach((t) => {
-      const [day, month, year] = t.Date.split("/");
+      const [day, month, year] = (t.Date || t.date).split("/");
       const key = `${year}-${month}`;
       months[key] = (months[key] || 0) + Number(t.Amount);
     });
@@ -39,28 +53,41 @@ export default function Goals() {
     return values.reduce((a, b) => a + b, 0) / values.length;
   }, [transactions]);
 
-  const handleAddGoal = (e) => {
+  const handleAddGoal = async (e) => {
     e.preventDefault();
-    if (!form.name || !form.target || !form.deadline) return;
+    if (!form.name || !form.target || !form.deadline || !user) return;
 
     const newGoal = {
-      id: Date.now(),
       name: form.name,
       target: Number(form.target),
       deadline: form.deadline,
     };
 
-    setGoals([...goals, newGoal]);
-    setForm({ name: "", target: "", deadline: "" });
-    setShowForm(false);
+    const { data, error } = await supabase
+      .from('goals')
+      .insert({
+        user_id: user.id,
+        ...newGoal
+      })
+      .select()
+      .single();
+
+    if (data && !error) {
+      setGoals([...goals, data]);
+      setForm({ name: "", target: "", deadline: "" });
+      setShowForm(false);
+    }
   };
 
   const handleDelete = (id) => {
     showModal({
       type: "confirm",
       message: "Are you sure you want to delete this goal?",
-      onConfirm: () => {
+      onConfirm: async () => {
         setGoals(goals.filter((g) => g.id !== id));
+        if (user) {
+          await supabase.from('goals').delete().eq('id', id);
+        }
       },
     });
   };

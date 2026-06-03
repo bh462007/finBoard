@@ -43,7 +43,16 @@ Redirect URLs tell Supabase where it is allowed to send users after they confirm
    http://localhost:5173/reset-password
    ```
 
-## 5. Next Steps
+## 5. Database Schema & Policies
+
+To persist application data (transactions, budgets, and goals) and secure it with Row Level Security (RLS), you need to run the initial SQL migration script.
+
+1. Go to the **SQL Editor** in your Supabase dashboard.
+2. Open the file `supabase/schema.sql` located in your project folder.
+3. Copy its entire content and paste it into the Supabase SQL editor.
+4. Click **Run** to execute the script. This will create the required tables and security rules.
+
+## 6. Next Steps
 
 - Start the development server using `npm run dev`.
 - The application will now securely connect to your Supabase project. If the environment variables are missing, the application will show a configuration error instead of crashing.

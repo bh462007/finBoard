@@ -5,17 +5,40 @@ import categorize from "../components/utils/categorize";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer } from "recharts";
 import { useModal } from "../context/ModalContext";
 import { useTheme } from "../context/ThemeContext";
+import { supabase } from "../lib/supabaseClient";
+import { useAuth } from "../context/AuthContext";
 
 export default function Budgets() {
   const { showModal } = useModal();
   const { theme } = useTheme();
-  const [budgets, setBudgets] = React.useState(() => {
-    const saved = localStorage.getItem("budgets");
-    return saved ? JSON.parse(saved) : {};
-  });
+  const { user } = useAuth();
+  
+  const [budgets, setBudgets] = React.useState({});
   const [showAlert, setShowAlert] = React.useState(false);
   const [exceededCategories, setExceededCategories] = React.useState([]);
   const { transactions, currency } = React.useContext(DataContext);
+
+  React.useEffect(() => {
+    async function fetchBudgets() {
+      if (!user) {
+        setBudgets({});
+        return;
+      }
+      const { data, error } = await supabase
+        .from('budgets')
+        .select('category, amount')
+        .eq('user_id', user.id);
+        
+      if (data && !error) {
+        const budgetsObj = {};
+        data.forEach(b => {
+          budgetsObj[b.category] = Number(b.amount);
+        });
+        setBudgets(budgetsObj);
+      }
+    }
+    fetchBudgets();
+  }, [user]);
 
   const spending = React.useMemo(
     () =>
@@ -28,10 +51,6 @@ export default function Budgets() {
         }, {}),
     [transactions]
   );
-
-  React.useEffect(() => {
-    localStorage.setItem("budgets", JSON.stringify(budgets));
-  }, [budgets]);
 
   React.useEffect(() => {
     const exceeded = [];
@@ -64,9 +83,30 @@ export default function Budgets() {
     }))
     .filter((item) => item.budget > 0);
 
-  const handleBudgetChange = (category, value) => {
-    if (Number(value) >= 0) {
-      setBudgets({ ...budgets, [category]: Number(value) });
+  const handleBudgetChange = async (category, value) => {
+    const numValue = Number(value);
+    if (numValue >= 0) {
+      setBudgets(prev => ({ ...prev, [category]: numValue }));
+      
+      if (user) {
+        await supabase
+          .from('budgets')
+          .upsert(
+            { user_id: user.id, category, amount: numValue },
+            { onConflict: 'user_id, category' }
+          );
+      }
+    } else if (value === "") {
+      const newBudgets = { ...budgets };
+      delete newBudgets[category];
+      setBudgets(newBudgets);
+      
+      if (user) {
+        await supabase
+          .from('budgets')
+          .delete()
+          .match({ user_id: user.id, category });
+      }
     }
   };
 
@@ -74,9 +114,11 @@ export default function Budgets() {
     showModal({
       type: "confirm",
       message: "Are you sure you want to reset all budgets?",
-      onConfirm: () => {
+      onConfirm: async () => {
         setBudgets({});
-        localStorage.removeItem("budgets");
+        if (user) {
+          await supabase.from('budgets').delete().eq('user_id', user.id);
+        }
       },
     });
   };

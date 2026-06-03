@@ -1,5 +1,7 @@
 import React from 'react';
 import normalizeTransaction, { normalizeTransactions } from '../lib/transactionNormalizer';
+import { supabase } from '../lib/supabaseClient';
+import { useAuth } from './AuthContext';
 
 export const DataContext = React.createContext();
 export const CURRENCIES = [
@@ -11,36 +13,19 @@ export const CURRENCIES = [
   { code: 'AED', symbol: 'د.إ', name: 'UAE Dirham' },
 ];
 
-function readLocalStorageJSON(key, fallback) {
-  try {
-    const storedValue = localStorage.getItem(key);
-    if (!storedValue) return fallback;
-
-    return JSON.parse(storedValue);
-  } catch {
-    return fallback;
-  }
-}
-
 export function AppContext({ children }) {
-  const [transactions, setTransactions] = React.useState(() =>
-    readLocalStorageJSON('transactions', [])
-  );
-
-  const [currency, setCurrency] = React.useState(() =>
-    readLocalStorageJSON('currency', CURRENCIES[0])
-  );
-
-
+  const { user } = useAuth();
+  const [transactions, setTransactions] = React.useState([]);
+  const [currency, setCurrency] = React.useState(CURRENCIES[0]);
   const [currencySymbols, setCurrencySymbols] = React.useState({});
   const [exchangeRates, setExchangeRates] = React.useState(null);
+  const [loadingData, setLoadingData] = React.useState(true);
 
   React.useEffect(() => {
     fetch('https://open.er-api.com/v6/latest/USD')
       .then((res) => res.json())
       .then((data) => {
         const symbols = {};
-
         Object.keys(data.rates).forEach((code) => {
           try {
             const formatted = new Intl.NumberFormat('en', {
@@ -48,36 +33,71 @@ export function AppContext({ children }) {
               currency: code,
               minimumFractionDigits: 0,
             }).format(0);
-
             symbols[code] = formatted.replace(/[\d,.\s]/g, '').trim();
           } catch {
             symbols[code] = code;
           }
         });
-
         setCurrencySymbols(symbols);
         setExchangeRates(data.rates);
       })
       .catch((err) => console.error(err));
   }, []);
 
-  // Normalize stored transactions on mount
   React.useEffect(() => {
-    try {
-      const stored = readLocalStorageJSON('transactions', []);
-
-      if (Array.isArray(stored) && stored.length > 0) {
-        const normalized = normalizeTransactions(stored, { currency });
-
-        if (JSON.stringify(normalized) !== JSON.stringify(stored)) {
-          setTransactions(normalized);
-          localStorage.setItem('transactions', JSON.stringify(normalized));
-        }
+    async function loadData() {
+      if (!user) {
+        setTransactions([]);
+        setCurrency(CURRENCIES[0]);
+        setLoadingData(false);
+        return;
       }
-    } catch (e) {
-      console.error('Normalization failed', e);
+
+      setLoadingData(true);
+      
+      try {
+        const { data: settingsData } = await supabase
+          .from('user_settings')
+          .select('currency')
+          .eq('user_id', user.id)
+          .single();
+          
+        if (settingsData && settingsData.currency) {
+          setCurrency(settingsData.currency);
+        } else {
+          await supabase.from('user_settings').insert({
+            user_id: user.id,
+            currency: CURRENCIES[0]
+          });
+        }
+
+        const { data: txData } = await supabase
+          .from('transactions')
+          .select('*')
+          .eq('user_id', user.id)
+          .order('created_at', { ascending: true });
+          
+        if (txData) {
+          const mappedTx = txData.map(t => ({
+            id: t.id,
+            Date: t.date,
+            Amount: t.amount,
+            Description: t.description,
+            Currency: t.currency
+          }));
+          
+          const normalized = normalizeTransactions(mappedTx, { currency: settingsData?.currency || CURRENCIES[0] });
+          setTransactions(normalized);
+        }
+      } catch (err) {
+        console.error('Error loading data from Supabase:', err);
+      } finally {
+        setLoadingData(false);
+      }
     }
-  }, []); // Note: we only want this to run once, so currency isn't in dep array to avoid loops, but normalization might use current base currency.
+    
+    loadData();
+  }, [user]);
 
   const updateCurrency = async (selectedCurrency) => {
     if (selectedCurrency.code === currency.code) return;
@@ -91,30 +111,51 @@ export function AppContext({ children }) {
     };
 
     setCurrency(enrichedCurrency);
-    localStorage.setItem('currency', JSON.stringify(enrichedCurrency));
+    if (user) {
+      await supabase
+        .from('user_settings')
+        .upsert({ user_id: user.id, currency: enrichedCurrency }, { onConflict: 'user_id' });
+    }
   };
 
-  const deleteTransaction = (index) => {
-    const updated = transactions.filter((_, i) => i !== index);
-
+  const deleteTransaction = async (indexOrId) => {
+    const txToDelete = typeof indexOrId === 'number' ? transactions[indexOrId] : transactions.find(t => t.id === indexOrId);
+    
+    if (txToDelete && txToDelete.id && user) {
+      await supabase.from('transactions').delete().eq('id', txToDelete.id);
+    }
+    
+    const updated = typeof indexOrId === 'number' 
+      ? transactions.filter((_, i) => i !== indexOrId)
+      : transactions.filter((t) => t.id !== indexOrId);
+      
     setTransactions(updated);
-    localStorage.setItem('transactions', JSON.stringify(updated));
   };
 
-  const addTransaction = (newTransaction) => {
+  const addTransaction = async (newTransaction) => {
     const normalized = normalizeTransaction(newTransaction, {
       currency,
       source: 'manual',
     });
 
-    const updated = [...(transactions || []), normalized];
+    if (user) {
+      const { data, error } = await supabase.from('transactions').insert({
+        user_id: user.id,
+        date: normalized.Date,
+        amount: normalized.Amount,
+        description: normalized.Description,
+        currency: normalized.Currency
+      }).select().single();
+      
+      if (data) {
+        normalized.id = data.id;
+      }
+    }
 
-    setTransactions(updated);
-    localStorage.setItem('transactions', JSON.stringify(updated));
+    setTransactions((prev) => [...prev, normalized]);
   };
 
-  const updateTransaction = (index, updatedTransaction) => {
-    // Retain the original currency if possible
+  const updateTransaction = async (index, updatedTransaction) => {
     const originalCurrency = transactions[index]?.Currency || currency;
     
     const normalized = normalizeTransaction({
@@ -125,12 +166,18 @@ export function AppContext({ children }) {
       source: 'edit',
     });
 
-    const updated = transactions.map((t, i) =>
-      i === index ? normalized : t
-    );
+    const targetTx = transactions[index];
+    if (targetTx && targetTx.id && user) {
+      normalized.id = targetTx.id;
+      await supabase.from('transactions').update({
+        date: normalized.Date,
+        amount: normalized.Amount,
+        description: normalized.Description,
+        currency: normalized.Currency
+      }).eq('id', targetTx.id);
+    }
 
-    setTransactions(updated);
-    localStorage.setItem('transactions', JSON.stringify(updated));
+    setTransactions((prev) => prev.map((t, i) => i === index ? normalized : t));
   };
 
   const displayTransactions = React.useMemo(() => {
@@ -165,12 +212,13 @@ export function AppContext({ children }) {
     <DataContext.Provider
       value={{
         transactions: displayTransactions,
-        setTransactions, // Used primarily internally or for full resets
+        setTransactions,
         currency,
         updateCurrency,
         deleteTransaction,
         addTransaction,
         updateTransaction,
+        loadingData
       }}
     >
       {children}
