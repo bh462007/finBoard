@@ -6,6 +6,8 @@ on:
 permissions:
   pull-requests: write
   issues: write
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 jobs:
   thank-contributor:
     if: github.event.pull_request.merged && github.event.pull_request.state == 'closed'
@@ -14,10 +16,10 @@ jobs:
       - name: Post thank you comment
         uses: actions/github-script@v7
         with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             const author = context.payload.pull_request.user.login;
 
-            // Fetch all merged PRs by this author in the repo
             const mergedPRs = await github.paginate(github.rest.pulls.list, {
               owner: context.repo.owner,
               repo: context.repo.repo,
