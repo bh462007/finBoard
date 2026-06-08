@@ -8,6 +8,7 @@ import {
   BarChart2,
   Settings,
   Target,
+  CircleHelp,
 } from "lucide-react";
 
 export default function Sidebar() {
@@ -106,19 +107,18 @@ export default function Sidebar() {
           </svg>
           GITHUB
         </a>
-        
-          <a href="https://irfandev.me"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="flex items-center justify-center gap-2 w-full px-4 py-2.5 rounded-xl text-xs font-bold tracking-wider text-[var(--color-fin-muted)] hover:text-[var(--color-fin-text)] transition-all duration-200"
-          style={{ border: "1px solid var(--color-fin-border)" }}
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
-            <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
-          </svg>
-          PORTFOLIO
-        </a>
+<Link
+  to="/help"
+  onClick={() => {
+    const drawer = document.getElementById("mobile-drawer");
+    if (drawer) drawer.checked = false;
+  }}
+  className="flex items-center justify-center gap-2 w-full px-4 py-2.5 rounded-xl text-xs font-bold tracking-wider text-[var(--color-fin-muted)] hover:text-[var(--color-fin-text)] transition-all duration-200"
+  style={{ border: "1px solid var(--color-fin-border)" }}
+>
+  <CircleHelp size={16} />
+  HELP CENTER
+</Link>
       </div>
     </div>
   );
