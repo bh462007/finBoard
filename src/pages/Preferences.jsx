@@ -5,14 +5,21 @@ import { useState } from "react";
 export default function Preferences() {
   const { theme, toggleTheme } = useTheme();
 
-  const [notifications, setNotifications] = useState({
-    budgetAlerts: true,
-    weeklySummary: true,
-    goalMilestones: false,
+  const [notifications, setNotifications] = useState(() => {
+    const saved = localStorage.getItem("finboard-notifications");
+    return saved ? JSON.parse(saved) : {
+      budgetAlerts: true,
+      weeklySummary: true,
+      goalMilestones: false,
+    };
   });
 
   const toggleNotification = (key) => {
-    setNotifications(prev => ({ ...prev, [key]: !prev[key] }));
+    setNotifications(prev => {
+      const updated = { ...prev, [key]: !prev[key] };
+      localStorage.setItem("finboard-notifications", JSON.stringify(updated));
+      return updated;
+    });
   };
 
   const notificationItems = [
@@ -60,21 +67,19 @@ export default function Preferences() {
             <div className="flex items-center gap-1 p-1 rounded-full border border-[var(--color-fin-border)] bg-[var(--color-fin-surface)]">
               <button
                 onClick={() => theme === "dark" && toggleTheme()}
-                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium transition-all duration-200 ${
-                  theme === "light"
-                    ? "bg-[var(--color-fin-accent)] text-white shadow"
-                    : "text-[var(--color-fin-muted)] hover:text-[var(--color-fin-text)]"
-                }`}
+                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium transition-all duration-200 ${theme === "light"
+                  ? "bg-[var(--color-fin-accent)] text-white shadow"
+                  : "text-[var(--color-fin-muted)] hover:text-[var(--color-fin-text)]"
+                  }`}
               >
                 <SunMedium size={13} /> Light
               </button>
               <button
                 onClick={() => theme === "light" && toggleTheme()}
-                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium transition-all duration-200 ${
-                  theme === "dark"
-                    ? "bg-[var(--color-fin-accent)] text-white shadow"
-                    : "text-[var(--color-fin-muted)] hover:text-[var(--color-fin-text)]"
-                }`}
+                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium transition-all duration-200 ${theme === "dark"
+                  ? "bg-[var(--color-fin-accent)] text-white shadow"
+                  : "text-[var(--color-fin-muted)] hover:text-[var(--color-fin-text)]"
+                  }`}
               >
                 <MoonStar size={13} /> Dark
               </button>
@@ -106,13 +111,11 @@ export default function Preferences() {
                 {/* Toggle Switch */}
                 <button
                   onClick={() => toggleNotification(key)}
-                  className={`relative w-11 h-6 rounded-full transition-colors duration-200 shrink-0 ${
-                    enabled ? "bg-[var(--color-fin-accent)]" : "bg-[var(--color-fin-border)]"
-                  }`}
+                  className={`relative w-11 h-6 rounded-full transition-colors duration-200 shrink-0 ${enabled ? "bg-[var(--color-fin-accent)]" : "bg-[var(--color-fin-border)]"
+                    }`}
                 >
-                  <span className={`absolute top-1 w-4 h-4 bg-white rounded-full shadow transition-all duration-200 ${
-                    enabled ? "left-6" : "left-1"
-                  }`} />
+                  <span className={`absolute top-1 w-4 h-4 bg-white rounded-full shadow transition-all duration-200 ${enabled ? "left-6" : "left-1"
+                    }`} />
                 </button>
               </div>
             );

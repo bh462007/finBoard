@@ -58,8 +58,7 @@ import { User, Mail, Calendar, TrendingUp, TrendingDown, PiggyBank, Receipt, Pen
                 .eq('user_id', user.id);
             if (goalsData) {
                 setGoalsTotal(goalsData.length);
-                const completed = goalsData.filter(g => income >= g.target).length;
-                setGoalsCompleted(completed);
+                const completed = goalsData.filter(g => savings >= g.target).length; setGoalsCompleted(completed);
             }
         }
         fetchCounts();
