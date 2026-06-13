@@ -1,4 +1,12 @@
-import { ChevronDown, HelpCircle, ArrowRight, Search } from "lucide-react";
+import { ChevronDown, HelpCircle, Search } from "lucide-react";
+
+import csvUploadGuide from "../assets/help/csv-upload-guide.png";
+import goalsGuide from "../assets/help/goals-guide.png";
+import insightsGuide from "../assets/help/insights-guide.png";
+import manualEntryGuide from "../assets/help/manual-entry-guide.png";
+import profileGuide from "../assets/help/profile-guide.png";
+import settingsPreferencesGuide from "../assets/help/settings-preferences-guide.png";
+import transactionsGuide from "../assets/help/transactions-guide.png";
 
 const guides = [
   {
@@ -11,8 +19,10 @@ const guides = [
       "Choose whether to Replace existing data or Append new data.",
       "Review the imported transactions on the dashboard.",
     ],
-    visualTitle: "Data Source walkthrough",
-    callouts: ["Upload CSV File", "Replace / Append", "Load Demo Data"],
+    visualTitle: "Annotated CSV upload walkthrough",
+    image: csvUploadGuide,
+    imageAlt:
+      "Annotated FinBoard settings screenshot showing the Data Source section, Replace and Append toggle, Upload CSV File card, and Load Demo Data button.",
   },
   {
     title: "How Demo Data Works",
@@ -23,22 +33,26 @@ const guides = [
       "Click Load Demo Data.",
       "Explore Dashboard, Budgets, Goals, and Insights using sample transactions.",
     ],
-    visualTitle: "Demo data loading",
-    callouts: ["Demo Data Card", "Load Demo Data", "Dashboard Preview"],
+    visualTitle: "Annotated demo data walkthrough",
+    image: csvUploadGuide,
+    imageAlt:
+      "Annotated FinBoard settings screenshot highlighting the Load Demo Data button and the data source workflow.",
   },
   {
     title: "How to Add Transactions Manually",
     description: "Create income or expense entries one by one.",
     steps: [
-      "Open Transactions.",
-      "Select a transaction date.",
-      "Choose a category.",
-      "Enter a description.",
-      "Select Income or Expense.",
-      "Enter the amount and save the transaction.",
+      "Open Settings.",
+      "Find the Manual Entry section.",
+      "Select the transaction date and category.",
+      "Enter a description if needed.",
+      "Choose Income or Expense.",
+      "Enter the amount and click Add Transaction.",
     ],
-    visualTitle: "Manual entry form",
-    callouts: ["Date Field", "Category Dropdown", "Income / Expense", "Amount", "Add Transaction"],
+    visualTitle: "Annotated manual transaction entry walkthrough",
+    image: manualEntryGuide,
+    imageAlt:
+      "Annotated FinBoard manual entry screenshot showing the date field, category dropdown, description field, income and expense selector, amount field, and Add Transaction button.",
   },
   {
     title: "Understanding Income vs Expense",
@@ -46,62 +60,76 @@ const guides = [
     steps: [
       "Use Income for salary, freelance earnings, refunds, or deposits.",
       "Use Expense for shopping, bills, food, travel, and subscriptions.",
-      "Review the dashboard charts to compare income and spending.",
+      "Review the profile summary and dashboard charts to compare income and spending.",
     ],
-    visualTitle: "Income and expense labels",
-    callouts: ["Income", "Expense", "Monthly Summary"],
+    visualTitle: "Annotated income and expense summary",
+    image: profileGuide,
+    imageAlt:
+      "Annotated FinBoard profile screenshot highlighting Total Income, Total Expenses, Total Savings, Transactions, Budgets Created, and Goals Created cards.",
   },
   {
-    title: "How Budgets Work",
-    description: "Set spending limits and compare them with your actual expenses.",
+    title: "How Transactions Work",
+    description: "View and manage your recorded income and expense history.",
     steps: [
-      "Open Budgets from the sidebar.",
-      "Create category-wise budget limits.",
-      "Compare your spending with the budget chart.",
-      "Adjust your budget based on actual spending patterns.",
+      "Open Transactions from the sidebar.",
+      "Review all recorded transactions in one place.",
+      "If no data is available, use Configure Settings to upload data or add entries manually.",
+      "Once data is available, use this page to review your spending and income history.",
     ],
-    visualTitle: "Budget tracking",
-    callouts: ["Category", "Budget Limit", "Spent Amount", "Comparison Chart"],
+    visualTitle: "Annotated transactions page walkthrough",
+    image: transactionsGuide,
+    imageAlt:
+      "Annotated FinBoard transactions screenshot showing the Transactions sidebar link, empty transaction history area, Configure Settings button, and transaction workflow notes.",
   },
   {
     title: "How Goals Work",
     description: "Track financial goals such as savings, travel, or emergency funds.",
     steps: [
       "Open Goals.",
-      "Add a goal name and target amount.",
-      "Track progress visually.",
+      "Click New Goal to create a savings target.",
+      "Add a goal name, target amount, and deadline.",
+      "Track total savings and monthly savings progress.",
       "Update your goal as you save more.",
     ],
-    visualTitle: "Goal management",
-    callouts: ["Goal Name", "Target Amount", "Progress"],
+    visualTitle: "Annotated goal management walkthrough",
+    image: goalsGuide,
+    imageAlt:
+      "Annotated FinBoard goals screenshot highlighting the New Goal button, total savings, average monthly savings, and goals list area.",
   },
   {
     title: "Understanding Insights",
     description: "Use analytics to understand spending trends and financial patterns.",
     steps: [
       "Open Insights.",
-      "Review spending charts and summaries.",
-      "Compare income, expenses, and monthly trends.",
+      "Review spending charts and summaries when transaction data is available.",
+      "If insights are empty, configure your data source from Settings.",
       "Use observations to make better financial decisions.",
     ],
-    visualTitle: "Insights dashboard",
-    callouts: ["Charts", "Trends", "Key Observations"],
+    visualTitle: "Annotated insights dashboard walkthrough",
+    image: insightsGuide,
+    imageAlt:
+      "Annotated FinBoard insights screenshot showing the Insights section, empty analytics state, Configure Settings button, and explanation of how insights are generated.",
   },
   {
     title: "Managing Profile & Settings",
-    description: "Manage preferences, currency, data source, and account settings.",
+    description: "Manage profile summary, preferences, theme, and notification settings.",
     steps: [
-      "Open Settings.",
-      "Update currency and preferences.",
-      "Upload CSV or load demo data.",
-      "Clear data only when you are sure.",
+      "Open Profile to review your financial summary.",
+      "Open Preferences to adjust theme and notification settings.",
+      "Use Settings to manage data source, CSV upload, demo data, and manual entries.",
+      "Review these sections regularly to keep FinBoard personalized and up to date.",
     ],
-    visualTitle: "Settings management",
-    callouts: ["Currency", "Data Source", "Clear Data"],
+    visualTitle: "Annotated profile and preferences walkthrough",
+    image: settingsPreferencesGuide,
+    secondaryImage: profileGuide,
+    imageAlt:
+      "Annotated FinBoard preferences screenshot showing theme selection and notification toggles.",
+    secondaryImageAlt:
+      "Annotated FinBoard profile screenshot showing financial summary cards and account overview.",
   },
 ];
 
-function VisualGuide({ title, callouts }) {
+function AnnotatedGuide({ title, image, imageAlt, secondaryImage, secondaryImageAlt }) {
   return (
     <div
       className="mt-5 rounded-2xl border p-4 overflow-hidden"
@@ -114,44 +142,40 @@ function VisualGuide({ title, callouts }) {
       <div className="mb-3 flex items-center justify-between gap-3">
         <p className="font-semibold text-[var(--color-fin-text)]">{title}</p>
         <span className="text-xs font-bold uppercase tracking-wider text-[var(--color-fin-muted)]">
-          Visual Guide
+          Annotated Screenshot
         </span>
       </div>
 
-      <div
-        className="relative rounded-xl border p-4 min-h-44"
+      <figure
+        className="rounded-xl border overflow-hidden bg-black/20"
         style={{ borderColor: "var(--color-fin-border)" }}
-        aria-label={`${title} annotated walkthrough`}
       >
-        <div className="grid gap-3 sm:grid-cols-2">
-          {callouts.map((callout, index) => (
-            <div
-              key={callout}
-              className="relative rounded-xl border px-4 py-3 text-sm font-semibold text-[var(--color-fin-text)]"
-              style={{
-                borderColor:
-                  index === 0
-                    ? "var(--color-fin-accent)"
-                    : "var(--color-fin-border)",
-                boxShadow:
-                  index === 0
-                    ? "0 0 0 3px color-mix(in srgb, var(--color-fin-accent) 18%, transparent)"
-                    : "none",
-              }}
-            >
-              <span className="mr-2 inline-flex h-6 w-6 items-center justify-center rounded-full bg-[var(--color-fin-accent)] text-xs font-bold text-white">
-                {index + 1}
-              </span>
-              {callout}
-            </div>
-          ))}
-        </div>
+        <img
+          src={image}
+          alt={imageAlt}
+          className="w-full h-auto object-contain"
+          loading="lazy"
+        />
+      </figure>
 
-        <div className="mt-4 flex flex-wrap items-center gap-2 text-xs text-[var(--color-fin-muted)]">
-          <ArrowRight size={16} className="text-[var(--color-fin-accent)]" />
-          Highlighted controls show the order users should follow.
-        </div>
-      </div>
+      {secondaryImage && (
+        <figure
+          className="mt-4 rounded-xl border overflow-hidden bg-black/20"
+          style={{ borderColor: "var(--color-fin-border)" }}
+        >
+          <img
+            src={secondaryImage}
+            alt={secondaryImageAlt}
+            className="w-full h-auto object-contain"
+            loading="lazy"
+          />
+        </figure>
+      )}
+
+      <p className="mt-3 text-xs text-[var(--color-fin-muted)]">
+        The screenshot above uses arrows, outlines, labels, and numbered
+        callouts to visually explain the related FinBoard workflow.
+      </p>
     </div>
   );
 }
@@ -169,8 +193,9 @@ export default function HelpCenter() {
               </h1>
             </div>
             <p className="text-[var(--color-fin-muted)]">
-              Learn how to use FinBoard with beginner-friendly guides,
-              visual callouts, and step-by-step walkthroughs.
+              Learn how to use FinBoard with beginner-friendly guides, real
+              annotated screenshots, highlighted UI elements, arrows, and
+              step-by-step visual walkthroughs.
             </p>
           </div>
 
@@ -186,7 +211,10 @@ export default function HelpCenter() {
 
       <section className="grid gap-4">
         {guides.map((guide, index) => (
-          <details key={guide.title} className="theme-card rounded-2xl p-5 group">
+          <details
+            key={guide.title}
+            className="theme-card rounded-2xl p-5 group"
+          >
             <summary className="flex cursor-pointer items-center justify-between gap-4 font-semibold text-[var(--color-fin-text)]">
               <span>
                 {index + 1}. {guide.title}
@@ -207,7 +235,13 @@ export default function HelpCenter() {
               ))}
             </ol>
 
-            <VisualGuide title={guide.visualTitle} callouts={guide.callouts} />
+            <AnnotatedGuide
+              title={guide.visualTitle}
+              image={guide.image}
+              imageAlt={guide.imageAlt}
+              secondaryImage={guide.secondaryImage}
+              secondaryImageAlt={guide.secondaryImageAlt}
+            />
           </details>
         ))}
       </section>
