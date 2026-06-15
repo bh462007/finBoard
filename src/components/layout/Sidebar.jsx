@@ -26,7 +26,6 @@ export default function Sidebar() {
     { name: "Settings", to: "/settings", icon: Settings },
     { name: "Profile", to: "/profile", icon: UserCircle },
     { name: "Preferences", to: "/preferences", icon: SlidersHorizontal },
-    { name: "Help Center", to: "/help", icon: CircleHelp },
   ];
 
   return (
@@ -62,10 +61,10 @@ export default function Sidebar() {
         >
           FINBOARD
         </span>
-        <span className="fin-badge ">Personal Finance</span>
+        <span className="fin-badge">Personal Finance</span>
       </div>
 
-      {/* Nav */}
+      {/* Navigation */}
       <nav className="flex flex-col py-3 px-3 gap-1 overflow-y-auto">
         {links.map((link) => {
           const isActive = path === link.to;
@@ -116,33 +115,23 @@ export default function Sidebar() {
         })}
       </nav>
 
-      {/* Footer */}
+      {/* Footer - Help Center replaces old Portfolio/Footer item */}
       <div
         className="p-3 flex flex-col gap-2 shrink-0 mt-auto"
         style={{ borderTop: "1px solid var(--color-fin-border)" }}
       >
-        <a
-          href="https://github.com/khanirfan18"
-          target="_blank"
-          rel="noopener noreferrer"
+        <Link
+          to="/help"
+          onClick={() => {
+            const drawer = document.getElementById("mobile-drawer");
+            if (drawer) drawer.checked = false;
+          }}
           className="flex items-center justify-center gap-2 w-full px-4 py-2.5 rounded-xl text-xs font-bold tracking-wider text-[var(--color-fin-muted)] hover:text-[var(--color-fin-text)] transition-all duration-200"
           style={{ border: "1px solid var(--color-fin-border)" }}
         >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="16"
-            height="16"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          >
-            <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
-          </svg>
-          GITHUB
-        </a>
+          <CircleHelp size={16} />
+          HELP CENTER
+        </Link>
       </div>
     </div>
   );
