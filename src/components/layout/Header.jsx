@@ -86,15 +86,6 @@ export default function Header() {
         <p className="text-xs text-[var(--color-fin-muted)] leading-tight">{getPageSubtitle()}</p>
       </div>
 
-      <button
-        type="button"
-        onClick={toggleTheme}
-        className="theme-toggle-button ml-auto inline-flex items-center rounded-full px-3 py-2 transition-all duration-200"
-        aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
-      >
-        {theme === 'dark' ? <SunMedium size={14} /> : <MoonStar size={14} />}
-      </button>
-
       {/* ── Profile section ──────────────────────────────────────── */}
       <div className="flex items-center gap-3 relative" ref={dropdownRef}>
         <button
