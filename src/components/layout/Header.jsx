@@ -1,13 +1,12 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/useAuth";
-import { useTheme } from "../../context/ThemeContext";
 import { useState, useRef, useEffect } from "react";
-import { LogOut, ChevronDown, MoonStar, SunMedium, User, Settings } from "lucide-react";
+import { LogOut, ChevronDown, User, Settings } from "lucide-react";
 export default function Header() {
   const location = useLocation();
   const navigate = useNavigate();
   const { user, signOut } = useAuth();
-  const { theme, toggleTheme } = useTheme();
+
 
   const [profileOpen, setProfileOpen] = useState(false);
   const dropdownRef = useRef(null);

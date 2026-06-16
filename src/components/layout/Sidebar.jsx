@@ -8,8 +8,6 @@ import {
   BarChart2,
   Settings,
   Target,
-  UserCircle,
-  SlidersHorizontal,
 } from "lucide-react";
 
 export default function Sidebar() {
