@@ -1,13 +1,12 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/useAuth";
-import { useTheme } from "../../context/ThemeContext";
 import { useState, useRef, useEffect } from "react";
-import { LogOut, ChevronDown, MoonStar, SunMedium, User, Settings } from "lucide-react";
+import { LogOut, ChevronDown, User, Settings } from "lucide-react";
 export default function Header() {
   const location = useLocation();
   const navigate = useNavigate();
   const { user, signOut } = useAuth();
-  const { theme, toggleTheme } = useTheme();
+
 
   const [profileOpen, setProfileOpen] = useState(false);
   const dropdownRef = useRef(null);
@@ -86,17 +85,8 @@ export default function Header() {
         <p className="text-xs text-[var(--color-fin-muted)] leading-tight">{getPageSubtitle()}</p>
       </div>
 
-      <button
-        type="button"
-        onClick={toggleTheme}
-        className="theme-toggle-button ml-auto inline-flex items-center rounded-full px-3 py-2 transition-all duration-200"
-        aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
-      >
-        {theme === 'dark' ? <SunMedium size={14} /> : <MoonStar size={14} />}
-      </button>
-
       {/* ── Profile section ──────────────────────────────────────── */}
-      <div className="flex items-center gap-3 relative" ref={dropdownRef}>
+      <div className="flex items-center gap-3 relative ml-auto" ref={dropdownRef}>
         <button
           onClick={() => setProfileOpen(!profileOpen)}
           className="profile-trigger"

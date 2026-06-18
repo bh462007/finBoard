@@ -1212,3 +1212,22 @@ body[data-theme="light"] .theme-sidebar {
   font-size: 1.2rem;
   font-weight: 700;
 }
+
+body[data-theme="dark"] .recharts-rectangle.recharts-cursor,
+body[data-theme="dark"] .recharts-cartesian-grid rect,
+[data-theme="dark"] .recharts-rectangle.recharts-cursor {
+  fill: rgba(255, 255, 255, 0.04) !important;
+}
+
+/* Fix the full plot background that turns gray on hover */
+body[data-theme="dark"] .recharts-surface,
+[data-theme="dark"] .recharts-surface {
+  background: transparent !important;
+}
+
+/* Target the cursor rect directly — recharts injects fill="#ccc" inline */
+body[data-theme="dark"] .recharts-bar-rectangle + rect,
+[data-theme="dark"] .recharts-tooltip-cursor {
+  fill: rgba(255, 255, 255, 0.04) !important;
+  stroke: none !important;
+}
