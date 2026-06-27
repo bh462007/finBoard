@@ -3,7 +3,7 @@ import normalizeTransaction, { normalizeTransactions } from '../lib/transactionN
 import { supabase } from '../lib/supabaseClient';
 import { useAuth } from './useAuth';
 import { DataContext } from './DataContext';
-import {CURRENCIES} from '../lib/Currencies'
+import { CURRENCIES } from '../lib/Currencies'
 
 export function AppContext({ children }) {
   const { user } = useAuth();
@@ -33,7 +33,11 @@ export function AppContext({ children }) {
         setCurrencySymbols(symbols);
         setExchangeRates(data.rates);
       })
-      .catch((err) => console.error(err));
+      .catch((err) => {
+        if (import.meta.env.DEV) {
+          console.error(err);
+        }
+      });
   }, []);
 
   React.useEffect(() => {
@@ -46,14 +50,14 @@ export function AppContext({ children }) {
       }
 
       setLoadingData(true);
-      
+
       try {
         const { data: settingsData } = await supabase
           .from('user_settings')
           .select('currency')
           .eq('user_id', user.id)
           .single();
-          
+
         if (settingsData && settingsData.currency) {
           setCurrency(settingsData.currency);
         } else {
@@ -68,7 +72,7 @@ export function AppContext({ children }) {
           .select('*')
           .eq('user_id', user.id)
           .order('created_at', { ascending: true });
-          
+
         if (txData) {
           const mappedTx = txData.map(t => ({
             id: t.id,
@@ -78,17 +82,19 @@ export function AppContext({ children }) {
             category: t.category,
             Currency: t.currency
           }));
-          
+
           const normalized = normalizeTransactions(mappedTx, { currency: settingsData?.currency || CURRENCIES[0] });
           setTransactions(normalized);
         }
       } catch (err) {
-        console.error('Error loading data from Supabase:', err);
+        if (import.meta.env.DEV) {
+          console.error('Error loading data from Supabase:', err);
+        }
       } finally {
         setLoadingData(false);
       }
     }
-    
+
     loadData();
   }, [user]);
 
@@ -113,15 +119,15 @@ export function AppContext({ children }) {
 
   const deleteTransaction = async (indexOrId) => {
     const txToDelete = typeof indexOrId === 'number' ? transactions[indexOrId] : transactions.find(t => t.id === indexOrId);
-    
+
     if (txToDelete && txToDelete.id && user) {
       await supabase.from('transactions').delete().eq('id', txToDelete.id);
     }
-    
-    const updated = typeof indexOrId === 'number' 
+
+    const updated = typeof indexOrId === 'number'
       ? transactions.filter((_, i) => i !== indexOrId)
       : transactions.filter((t) => t.id !== indexOrId);
-      
+
     setTransactions(updated);
   };
 
@@ -140,7 +146,7 @@ export function AppContext({ children }) {
         category: normalized.category,
         currency: normalized.Currency
       }).select().single();
-      
+
       if (data) {
         normalized.id = data.id;
       }
@@ -151,7 +157,7 @@ export function AppContext({ children }) {
 
   const updateTransaction = async (index, updatedTransaction) => {
     const originalCurrency = transactions[index]?.Currency || currency;
-    
+
     const normalized = normalizeTransaction({
       ...updatedTransaction,
       Currency: originalCurrency,
@@ -177,16 +183,16 @@ export function AppContext({ children }) {
 
   const displayTransactions = React.useMemo(() => {
     if (!transactions) return [];
-    
+
     return transactions.map((t) => {
       let convertedAmt = t.Amount;
-      
+
       if (exchangeRates && t.Currency?.code !== currency.code) {
         const origCode = t.Currency?.code || currency.code;
         const rateOrigToUSD = 1 / (exchangeRates[origCode] || 1);
         const rateUSDToTarget = exchangeRates[currency.code] || 1;
         const conversionRate = rateOrigToUSD * rateUSDToTarget;
-        
+
         const parsed = Number(t.Amount);
         if (!isNaN(parsed)) {
           convertedAmt = parsed * conversionRate;
