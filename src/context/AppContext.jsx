@@ -115,7 +115,11 @@ export function AppContext({ children }) {
     const txToDelete = typeof indexOrId === 'number' ? transactions[indexOrId] : transactions.find(t => t.id === indexOrId);
     
     if (txToDelete && txToDelete.id && user) {
-      await supabase.from('transactions').delete().eq('id', txToDelete.id);
+      const { error } = await supabase.from('transactions').delete().eq('id', txToDelete.id);
+      if (error) {
+        console.error('Error deleting transaction:', error);
+        throw error;
+      }
     }
     
     const updated = typeof indexOrId === 'number' 
@@ -132,7 +136,7 @@ export function AppContext({ children }) {
     });
 
     if (user) {
-      const { data } = await supabase.from('transactions').insert({
+      const { data, error } = await supabase.from('transactions').insert({
         user_id: user.id,
         date: normalized.Date,
         amount: normalized.Amount,
@@ -140,6 +144,11 @@ export function AppContext({ children }) {
         category: normalized.category,
         currency: normalized.Currency
       }).select().single();
+      
+      if (error) {
+        console.error('Error adding transaction:', error);
+        throw error;
+      }
       
       if (data) {
         normalized.id = data.id;
@@ -163,13 +172,18 @@ export function AppContext({ children }) {
     const targetTx = transactions[index];
     if (targetTx && targetTx.id && user) {
       normalized.id = targetTx.id;
-      await supabase.from('transactions').update({
+      const { error } = await supabase.from('transactions').update({
         date: normalized.Date,
         amount: normalized.Amount,
         description: normalized.Description,
         category: normalized.category,
         currency: normalized.Currency
       }).eq('id', targetTx.id);
+
+      if (error) {
+        console.error('Error updating transaction:', error);
+        throw error;
+      }
     }
 
     setTransactions((prev) => prev.map((t, i) => i === index ? normalized : t));
