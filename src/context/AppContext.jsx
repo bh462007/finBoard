@@ -15,8 +15,14 @@ export function AppContext({ children }) {
 
   React.useEffect(() => {
     fetch('https://open.er-api.com/v6/latest/USD')
-      .then((res) => res.json())
+      .then((res) => {
+        if (!res.ok) throw new Error(`Exchange rate API failed with status: ${res.status}`);
+        return res.json();
+      })
       .then((data) => {
+        if (!data || data.result === 'error' || !data.rates) {
+          throw new Error(data?.['error-type'] || 'Invalid response from exchange rate API');
+        }
         const symbols = {};
         Object.keys(data.rates).forEach((code) => {
           try {
@@ -33,7 +39,7 @@ export function AppContext({ children }) {
         setCurrencySymbols(symbols);
         setExchangeRates(data.rates);
       })
-      .catch((err) => console.error(err));
+      .catch((err) => console.error('Failed to fetch exchange rates:', err));
   }, []);
 
   React.useEffect(() => {
