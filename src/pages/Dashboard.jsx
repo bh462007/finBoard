@@ -15,7 +15,7 @@ import {
 } from "recharts";
 import React from "react";
 import { useMemo } from "react";
-import { parse, format } from "date-fns";
+import { parse, format, isValid } from "date-fns";
 import { TrendingUp, TrendingDown, PiggyBank, Plus, X } from "lucide-react";
 import { useTheme } from "../context/ThemeContext";
 
@@ -121,8 +121,14 @@ const totalExpense = useMemo(() => {
 }, [categoryData]);
 
   const getMonth = (dateStr) => {
-    const date = parse(dateStr, "dd/MM/yyyy", new Date());
-    return format(date, "MMM yyyy");
+    try {
+      if (!dateStr) return "Unknown";
+      const date = parse(dateStr, "dd/MM/yyyy", new Date());
+      if (!isValid(date)) return "Unknown";
+      return format(date, "MMM yyyy");
+    } catch {
+      return "Unknown";
+    }
   };
 
   const monthData = useMemo(() => {
