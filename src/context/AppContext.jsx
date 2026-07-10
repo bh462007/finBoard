@@ -15,8 +15,14 @@ export function AppContext({ children }) {
 
   React.useEffect(() => {
     fetch('https://open.er-api.com/v6/latest/USD')
-      .then((res) => res.json())
+      .then((res) => {
+        if (!res.ok) throw new Error(`Exchange rate API failed with status: ${res.status}`);
+        return res.json();
+      })
       .then((data) => {
+        if (!data || data.result === 'error' || !data.rates) {
+          throw new Error(data?.['error-type'] || 'Invalid response from exchange rate API');
+        }
         const symbols = {};
         Object.keys(data.rates).forEach((code) => {
           try {
@@ -35,7 +41,7 @@ export function AppContext({ children }) {
       })
       .catch((err) => {
         if (import.meta.env.DEV) {
-          console.error(err);
+          console.error('Failed to fetch exchange rates:', err);
         }
       });
   }, []);
@@ -121,7 +127,13 @@ export function AppContext({ children }) {
     const txToDelete = typeof indexOrId === 'number' ? transactions[indexOrId] : transactions.find(t => t.id === indexOrId);
 
     if (txToDelete && txToDelete.id && user) {
-      await supabase.from('transactions').delete().eq('id', txToDelete.id);
+      const { error } = await supabase.from('transactions').delete().eq('id', txToDelete.id);
+      if (error) {
+        if (import.meta.env.DEV) {
+          console.error('Error deleting transaction:', error);
+        }
+        throw error;
+      }
     }
 
     const updated = typeof indexOrId === 'number'
@@ -138,7 +150,7 @@ export function AppContext({ children }) {
     });
 
     if (user) {
-      const { data } = await supabase.from('transactions').insert({
+      const { data, error } = await supabase.from('transactions').insert({
         user_id: user.id,
         date: normalized.Date,
         amount: normalized.Amount,
@@ -146,6 +158,13 @@ export function AppContext({ children }) {
         category: normalized.category,
         currency: normalized.Currency
       }).select().single();
+
+      if (error) {
+        if (import.meta.env.DEV) {
+          console.error('Error adding transaction:', error);
+        }
+        throw error;
+      }
 
       if (data) {
         normalized.id = data.id;
@@ -169,13 +188,20 @@ export function AppContext({ children }) {
     const targetTx = transactions[index];
     if (targetTx && targetTx.id && user) {
       normalized.id = targetTx.id;
-      await supabase.from('transactions').update({
+      const { error } = await supabase.from('transactions').update({
         date: normalized.Date,
         amount: normalized.Amount,
         description: normalized.Description,
         category: normalized.category,
         currency: normalized.Currency
       }).eq('id', targetTx.id);
+
+      if (error) {
+        if (import.meta.env.DEV) {
+          console.error('Error updating transaction:', error);
+        }
+        throw error;
+      }
     }
 
     setTransactions((prev) => prev.map((t, i) => i === index ? normalized : t));
